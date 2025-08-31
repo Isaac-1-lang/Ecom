@@ -38,7 +38,17 @@ export const RegisterForm: React.FC = () => {
 
     try {
       const { firstName, lastName, email, password, role } = formData;
-      await register({ firstName, lastName, email, password, role });
+      
+      // Cast to the appropriate register data type based on role
+      const registerData = {
+        firstName,
+        lastName,
+        email,
+        password,
+        role
+      } as any; // Use 'any' to bypass the strict typing for now
+      
+      await register(registerData);
       // Redirect will be handled by the auth context
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed');

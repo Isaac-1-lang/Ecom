@@ -191,9 +191,9 @@ export const cartService = {
 
   // validateItem: endpoint not present on backend; remove or implement later
 
-  async getCartItemCount(): Promise<number> {
+  async getCartItemCount(userId: string): Promise<number> {
     try {
-      const cart = await this.getCart();
+      const cart = await this.getCart(userId, 0, 10, 'addedAt', 'desc');
       return cart?.totalItems || 0;
     } catch (error: any) {
       console.error('Error getting cart item count:', error);

@@ -83,15 +83,15 @@ export default function NewProductPage() {
       size: string;
     }>,
 
-    // Product Videos
-    productVideos: '',
-    videoMetadata: ''
+
   });
 
 
 
   const [images, setImages] = useState<File[]>([]);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [videos, setVideos] = useState<File[]>([]);
+  const [videoUrls, setVideoUrls] = useState<string[]>([]);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // Load categories on component mount
@@ -200,6 +200,22 @@ export default function NewProductPage() {
     setImageUrls(prev => prev.filter((_, i) => i !== index));
   };
 
+  const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    setVideos(prev => [...prev, ...files]);
+    
+    // Create preview URLs
+    files.forEach(file => {
+      const url = URL.createObjectURL(file);
+      setVideoUrls(prev => [...prev, url]);
+    });
+  };
+
+  const removeVideo = (index: number) => {
+    setVideos(prev => prev.filter((_, i) => i !== index));
+    setVideoUrls(prev => prev.filter((_, i) => i !== index));
+  };
+
   // Generate SKU from product name
   const generateSKU = (name: string): string => {
     const timestamp = Date.now().toString().slice(-6);
@@ -244,11 +260,14 @@ export default function NewProductPage() {
 
       // 1) Upload media first to get URLs
       let uploadedImages: any[] = [];
+      let uploadedVideos: any[] = [];
       try {
         uploadedImages = images.length > 0 ? await mediaService.uploadImages(images) : [];
+        uploadedVideos = videos.length > 0 ? await mediaService.uploadVideos(videos) : [];
       } catch (e) {
         console.error('Bulk upload failed:', e);
         uploadedImages = [];
+        uploadedVideos = [];
       }
 
       // Process uploaded images for multipart endpoint
@@ -260,6 +279,15 @@ export default function NewProductPage() {
           sortOrder: index
         }))
         .filter(img => !!img.url);
+
+      // Process uploaded videos
+      const processedVideos = uploadedVideos
+        .map((resp, index) => ({
+          url: (resp?.secureUrl || resp?.url || ''),
+          title: `${formData.name} - Video ${index + 1}`,
+          sortOrder: index
+        }))
+        .filter(video => !!video.url);
 
       // Prepare product data after images are processed
       const productData: CreateProductData = {
@@ -326,9 +354,9 @@ export default function NewProductPage() {
           isPrimary: img.isPrimary,
           sortOrder: img.sortOrder
         })),
-        // videos and video metadata handled by separate upload flow
-        productVideos: formData.productVideos ? [formData.productVideos] : undefined,
-        videoMetadata: formData.productVideos || undefined
+        // Add videos as File objects for multipart endpoint
+        productVideos: videos.length > 0 ? videos.map(video => video.name) : undefined,
+        videoMetadata: processedVideos.length > 0 ? JSON.stringify(processedVideos) : undefined
       };
 
       // Validate critical data types before sending
@@ -354,6 +382,9 @@ export default function NewProductPage() {
       console.log('Images:', images);
       console.log('Uploaded Images:', uploadedImages);
       console.log('Processed Images:', processedImages);
+      console.log('Videos:', videos);
+      console.log('Uploaded Videos:', uploadedVideos);
+      console.log('Processed Videos:', processedVideos);
       console.log('Warehouse Stock:', formData.warehouseStock);
       console.log('Variants:', formData.variants);
       console.log('=== END DEBUG ===');
@@ -1022,6 +1053,54 @@ export default function NewProductPage() {
                     <button
                       type="button"
                       onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-error text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <FiX className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Videos */}
+        <div className="bg-white p-6 rounded-xl shadow-soft border border-neutral-200">
+          <h2 className="text-xl font-semibold text-neutral-800 mb-4">Product Videos</h2>
+          <div className="space-y-4">
+            <div className="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center">
+              <FiUpload className="h-12 w-12 text-neutral-400 mx-auto mb-4" />
+              <p className="text-neutral-600 mb-2">Upload product videos</p>
+              <p className="text-sm text-neutral-500 mb-4">MP4, MOV, AVI up to 100MB each</p>
+              <input
+                type="file"
+                multiple
+                accept="video/*"
+                onChange={handleVideoUpload}
+                className="hidden"
+                id="video-upload"
+              />
+              <label
+                htmlFor="video-upload"
+                className="bg-primary hover:bg-primary-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-colors"
+              >
+                Choose Video Files
+              </label>
+            </div>
+
+            {/* Video Previews */}
+            {videoUrls.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {videoUrls.map((url, index) => (
+                  <div key={index} className="relative group">
+                    <video
+                      src={url}
+                      controls
+                      className="w-full h-48 object-cover rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeVideo(index)}
                       className="absolute -top-2 -right-2 bg-error text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                     >
                       <FiX className="h-3 w-3" />

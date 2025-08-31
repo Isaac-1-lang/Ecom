@@ -142,25 +142,36 @@ const config: Config = {
             warning: '#d97706', // Warning text
             error: '#dc2626', // Error text
           },
-          // Interactive elements
-          interactive: {
-            hover: '#f3f4f6', // Hover state
-            active: '#e5e7eb', // Active state
-            focus: '#dbeafe', // Focus state
-            selected: '#eff6ff', // Selected state
-            disabled: '#f9fafb', // Disabled state
-          },
-          // Shadows - Subtle, professional
-          shadow: {
-            sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-            md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-            lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-            xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-            inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-            soft: '0 2px 8px rgba(0, 0, 0, 0.08)',
-            'soft-lg': '0 4px 16px rgba(0, 0, 0, 0.12)',
-            'soft-xl': '0 8px 32px rgba(0, 0, 0, 0.16)',
-          },
+                  // Interactive elements
+        interactive: {
+          hover: '#f3f4f6', // Hover state
+          active: '#e5e7eb', // Active state
+          focus: '#dbeafe', // Focus state
+          selected: '#eff6ff', // Selected state
+          disabled: '#f9fafb', // Disabled state
+        },
+        // Additional light mode colors for admin dashboard
+        'surface-sidebar': '#f8fafc', // Sidebar background
+        'border-subtle': '#f1f5f9', // Very subtle border
+        'surface-elevated': '#ffffff', // Elevated surface
+        'interactive-selected': '#eff6ff', // Selected state
+                  // Shadows - Subtle, professional
+        shadow: {
+          sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+          md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+          lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+          xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+          inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
+          soft: '0 2px 8px rgba(0, 0, 0, 0.08)',
+          'soft-lg': '0 4px 16px rgba(0, 0, 0, 0.12)',
+          'soft-xl': '0 8px 32px rgba(0, 0, 0, 0.16)',
+          // Additional shadows for admin dashboard
+          'light-soft': '0 2px 8px rgba(0, 0, 0, 0.06)',
+          'light-sm': '0 1px 3px rgba(0, 0, 0, 0.04)',
+          'light-md': '0 4px 12px rgba(0, 0, 0, 0.08)',
+          'light-lg': '0 8px 24px rgba(0, 0, 0, 0.12)',
+          'light-xl': '0 16px 48px rgba(0, 0, 0, 0.16)',
+        },
         },
         // Ecommerce-specific colors - Refined and user-friendly
         'price': '#dc2626', // Muted red for prices (less aggressive)

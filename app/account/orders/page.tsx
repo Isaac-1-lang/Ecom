@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useOrdersStore } from "../../../features/orders/store";
 import OrderCard from "../../../components/OrderCard";
-import { Order } from "../../../types/order";
+import { Order } from "../../../services/orderService";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "../../../features/auth/store";
 

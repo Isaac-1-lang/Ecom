@@ -6,9 +6,10 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_...',
 });
 
 // Client-side Stripe instance
-export const getStripe = () => {
+export const getStripe = async () => {
   if (typeof window !== 'undefined') {
-    return require('@stripe/stripe-js').loadStripe(
+    const { loadStripe } = await import('@stripe/stripe-js');
+    return loadStripe(
       process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_...'
     );
   }

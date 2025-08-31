@@ -18,7 +18,7 @@ export default function ProductActions({ product }: { product: Product }) {
           addToCart({
             ...product,
             quantity: 1,
-            image: product.image ?? "",
+            image: typeof product.image === 'string' ? product.image : product.image?.imageUrl ?? "",
             name: product.name ?? "",
           })
         }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiPlus, FiEdit, FiTrash2, FiEye, FiCalendar, FiPercent, FiTag, FiUsers } from 'react-icons/fi';
 import { discountService, DiscountDTO, CreateDiscountDTO } from '../../../services/discountService';
 import { toast } from 'react-hot-toast';
@@ -13,11 +13,7 @@ export default function DiscountsPage() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  useEffect(() => {
-    loadDiscounts();
-  }, [currentPage]);
-
-  const loadDiscounts = async () => {
+  const loadDiscounts = useCallback(async() => {
     try {
       setLoading(true);
       const response = await discountService.list(currentPage, 10, 'createdAt', 'desc', false);
@@ -29,7 +25,11 @@ export default function DiscountsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage]);
+
+  useEffect(() => {
+    loadDiscounts();
+  }, [loadDiscounts]);
 
   const handleCreateDiscount = async (discountData: CreateDiscountDTO) => {
     try {

@@ -131,7 +131,7 @@ export default function ProductCard({ product }: { product: Product }) {
             />
           ))}
         </div>
-        <span className="text-xs text-gray-500 ml-1">
+        <span className="text-xs text-light-text-tertiary ml-1">
           ({reviewCount})
         </span>
       </div>
@@ -143,12 +143,12 @@ export default function ProductCard({ product }: { product: Product }) {
     
     return (
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-lg font-bold text-gray-900 dark:text-white">
+        <span className="text-lg font-bold text-light-text-primary dark:text-white">
           {formatPrice(product.price)}
         </span>
         {hasDiscount && (
           <>
-            <span className="text-sm text-gray-500 line-through">
+            <span className="text-sm text-light-text-tertiary line-through">
               {formatPrice(product.originalPrice!)}
             </span>
             <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-full font-medium">
@@ -175,12 +175,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <div 
-      className="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col"
+      className="group relative bg-light-surface-primary dark:bg-gray-800 border border-light-border-primary dark:border-gray-700 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden h-full flex flex-col"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
+      <div className="relative aspect-square overflow-hidden bg-light-bg-tertiary dark:bg-gray-700">
         <Link href={`/products/${product.slug || product.id}`}>
           <Image
             src={productImage}
@@ -203,7 +203,7 @@ export default function ProductCard({ product }: { product: Product }) {
             className={`p-2 rounded-full shadow-lg transition-all cursor-pointer ${
               isInWishlist(product.id)
                 ? 'bg-red-500 text-white'
-                : 'bg-white text-gray-600 hover:bg-red-500 hover:text-white'
+                : 'bg-light-surface-primary text-light-text-tertiary hover:bg-red-500 hover:text-white'
             }`}
             title={isInWishlist(product.id) ? 'Remove from Wishlist' : 'Add to Wishlist'}
           >
@@ -212,7 +212,7 @@ export default function ProductCard({ product }: { product: Product }) {
           
           <button
             onClick={handleQuickView}
-            className="p-2 rounded-full bg-white text-gray-600 shadow-lg hover:bg-blue-500 hover:text-white transition-colors cursor-pointer"
+            className="p-2 rounded-full bg-light-surface-primary text-light-text-tertiary shadow-lg hover:bg-blue-500 hover:text-white transition-colors cursor-pointer"
             title="Quick View"
           >
             <FiEye className="h-4 w-4" />
@@ -220,7 +220,7 @@ export default function ProductCard({ product }: { product: Product }) {
           
           <button
             onClick={handleShare}
-            className="p-2 rounded-full bg-white text-gray-600 shadow-lg hover:bg-green-500 hover:text-white transition-colors cursor-pointer"
+            className="p-2 rounded-full bg-light-surface-primary text-light-text-tertiary shadow-lg hover:bg-green-500 hover:text-white transition-colors cursor-pointer"
             title="Share Product"
           >
             <FiShare2 className="h-4 w-4" />
@@ -259,13 +259,13 @@ export default function ProductCard({ product }: { product: Product }) {
       {/* Product Info */}
       <div className="p-4 flex-1 flex flex-col">
         {/* Category */}
-        <div className="text-xs text-gray-500 mb-2 uppercase tracking-wide">
+        <div className="text-xs text-light-text-tertiary mb-2 uppercase tracking-wide">
           {productCategory}
         </div>
 
         {/* Product Name */}
         <Link href={`/products/${product.slug || product.id}`} className="cursor-pointer">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
+          <h3 className="text-sm font-medium text-light-text-primary dark:text-white mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -278,7 +278,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Stock Status */}
         {stockQuantity > 0 && (
-          <div className="text-xs text-gray-500 mb-3">
+          <div className="text-xs text-light-text-tertiary mb-3">
             {stockQuantity < 10 ? (
               <span className="text-yellow-600">Only {stockQuantity} left!</span>
             ) : (
@@ -289,11 +289,11 @@ export default function ProductCard({ product }: { product: Product }) {
 
         {/* Quantity Controls */}
         <div className="flex items-center gap-2 mb-3">
-          <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg">
+          <div className="flex items-center border border-light-border-primary dark:border-gray-600 rounded-lg">
             <button
               onClick={() => handleQuantityChange(quantity - 1)}
               disabled={quantity <= 1}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 hover:bg-light-interactive-hover dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FiMinus className="h-3 w-3" />
             </button>
@@ -303,7 +303,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <button
               onClick={() => handleQuantityChange(quantity + 1)}
               disabled={quantity >= 99 || (stockQuantity > 0 && quantity >= stockQuantity)}
-              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="p-2 hover:bg-light-interactive-hover dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <FiPlus className="h-3 w-3" />
             </button>
@@ -324,7 +324,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <button
               onClick={handleAddToCart}
               disabled={stockQuantity === 0}
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              className="flex-1 bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-600 disabled:bg-light-interactive-disabled disabled:text-light-text-muted disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <FiShoppingCart className="h-4 w-4" />
               {stockQuantity === 0 ? 'Out of Stock' : 'Add to Cart'}

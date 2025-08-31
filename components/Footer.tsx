@@ -52,13 +52,13 @@ export default function Footer({ variant = 'default' }: FooterProps) {
   const getFooterStyle = () => {
     switch (variant) {
       case 'admin':
-        return 'bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 ml-64';
+        return 'bg-light-surface-primary dark:bg-neutral-800 border-t border-light-border-primary dark:border-neutral-700 ml-64';
       case 'delivery':
-        return 'bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 ml-64';
+        return 'bg-light-surface-primary dark:bg-neutral-800 border-t border-light-border-primary dark:border-neutral-700 ml-64';
       case 'employee':
-        return 'bg-white dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700 ml-64';
+        return 'bg-light-surface-primary dark:bg-neutral-800 border-t border-light-border-primary dark:border-neutral-700 ml-64';
       default:
-        return 'bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-700';
+        return 'bg-light-bg-quaternary dark:bg-neutral-900 border-t border-light-border-primary dark:border-neutral-700';
     }
   };
 
@@ -84,34 +84,34 @@ export default function Footer({ variant = 'default' }: FooterProps) {
               <Link href="/" className="text-lg font-bold text-primary">
                 {SITE_CONFIG.name}
               </Link>
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">
+              <span className="text-xs text-light-text-tertiary dark:text-neutral-400">
                 Professional Dashboard
               </span>
             </div>
 
             {/* Quick Links */}
             <div className="flex items-center gap-6 text-xs">
-              <Link href="/help" className="text-neutral-600 dark:text-neutral-400 hover:text-primary transition-colors cursor-pointer">
+              <Link href="/help" className="text-light-text-secondary dark:text-neutral-400 hover:text-primary transition-colors cursor-pointer">
                 Help
               </Link>
-              <Link href="/contact" className="text-neutral-600 dark:text-neutral-400 hover:text-primary transition-colors cursor-pointer">
+              <Link href="/contact" className="text-light-text-secondary dark:text-neutral-400 hover:text-primary transition-colors cursor-pointer">
                 Contact
               </Link>
-              <Link href="/privacy" className="text-neutral-600 dark:text-neutral-400 hover:text-primary transition-colors cursor-pointer">
+              <Link href="/privacy" className="text-light-text-secondary dark:text-neutral-400 hover:text-primary transition-colors cursor-pointer">
                 Privacy
               </Link>
             </div>
 
             {/* Status */}
-            <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+            <div className="flex items-center gap-2 text-xs text-light-text-tertiary dark:text-neutral-400">
               <div className="w-2 h-2 bg-success rounded-full"></div>
               <span>System Online</span>
             </div>
           </div>
 
           {/* Copyright */}
-          <div className="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-700 text-center">
-            <p className="text-xs text-neutral-500 dark:text-neutral-400">
+          <div className="mt-4 pt-4 border-t border-light-border-primary dark:border-neutral-700 text-center">
+            <p className="text-xs text-light-text-tertiary dark:text-neutral-400">
               © {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
             </p>
           </div>
@@ -122,7 +122,7 @@ export default function Footer({ variant = 'default' }: FooterProps) {
 
   // Full footer for main pages
   return (
-    <footer className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t border-neutral-200 dark:border-neutral-700">
+    <footer className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-t border-light-border-primary dark:border-neutral-700">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -132,7 +132,7 @@ export default function Footer({ variant = 'default' }: FooterProps) {
             <Link href="/" className="text-xl font-bold text-primary mb-3 block">
               {SITE_CONFIG.name}
             </Link>
-            <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
+            <p className="text-sm text-light-text-secondary dark:text-neutral-400 mb-4 leading-relaxed">
               Quality products and exceptional customer service.
             </p>
             
@@ -140,15 +140,15 @@ export default function Footer({ variant = 'default' }: FooterProps) {
             <div className="space-y-2 mb-4">
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <FiMapPin className="h-4 w-4 text-primary" />
-                <span className="text-xs text-neutral-700 dark:text-neutral-300">{SITE_CONFIG.address}</span>
+                <span className="text-xs text-light-text-primary dark:text-neutral-300">{SITE_CONFIG.address}</span>
               </div>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <FiPhone className="h-4 w-4 text-primary" />
-                <span className="text-xs text-neutral-700 dark:text-neutral-300">{SITE_CONFIG.phone}</span>
+                <span className="text-xs text-light-text-primary dark:text-neutral-300">{SITE_CONFIG.phone}</span>
               </div>
               <div className="flex items-center justify-center md:justify-start gap-2">
                 <FiMail className="h-4 w-4 text-primary" />
-                <span className="text-xs text-neutral-700 dark:text-neutral-300">{SITE_CONFIG.email}</span>
+                <span className="text-xs text-light-text-primary dark:text-neutral-300">{SITE_CONFIG.email}</span>
               </div>
             </div>
 
@@ -158,7 +158,7 @@ export default function Footer({ variant = 'default' }: FooterProps) {
                 <Link
                   key={social.name}
                   href={social.url}
-                  className="p-2 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 hover:bg-primary hover:text-white transition-colors cursor-pointer"
+                  className="p-2 rounded-lg bg-light-surface-primary dark:bg-neutral-800 border border-light-border-primary dark:border-neutral-700 text-light-text-secondary dark:text-neutral-300 hover:bg-primary hover:text-white transition-colors cursor-pointer"
                   aria-label={social.name}
                 >
                   <social.icon className="h-4 w-4" />
@@ -169,13 +169,13 @@ export default function Footer({ variant = 'default' }: FooterProps) {
 
           {/* Quick Links */}
           <div className="text-center md:text-left">
-            <h4 className="font-semibold text-neutral-800 dark:text-neutral-100 mb-4 text-sm">Quick Links</h4>
+            <h4 className="font-semibold text-light-text-primary dark:text-neutral-100 mb-4 text-sm">Quick Links</h4>
             <div className="grid grid-cols-2 gap-2">
               {quickLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.url}
-                  className="text-xs text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200 transition-colors block py-1 cursor-pointer"
+                  className="text-xs text-light-text-secondary dark:text-neutral-400 hover:text-light-text-primary dark:hover:text-neutral-200 transition-colors block py-1 cursor-pointer"
                 >
                   {link.name}
                 </Link>
@@ -185,10 +185,10 @@ export default function Footer({ variant = 'default' }: FooterProps) {
 
           {/* Customer Service */}
           <div className="text-center md:text-left">
-            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 text-light-text-primary">
               Customer Service
             </h4>
-            <ul className="space-y-2 text-neutral-700 dark:text-neutral-300">
+            <ul className="space-y-2 text-light-text-primary dark:text-neutral-300">
               {customerServiceLinks.map((link) => (
                 <li key={link.name}>
                   <Link href={link.url} className="hover:text-primary transition-colors text-sm">
@@ -201,7 +201,7 @@ export default function Footer({ variant = 'default' }: FooterProps) {
 
           {/* Newsletter */}
           <div className="text-center md:text-left">
-            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wider mb-4 text-light-text-primary">
               Subscribe
             </h4>
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-2">
@@ -210,7 +210,7 @@ export default function Footer({ variant = 'default' }: FooterProps) {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="px-3 py-2 rounded-md border border-neutral-300 dark:border-neutral-600 bg-background text-neutral-800 dark:text-neutral-200 text-sm"
+                className="px-3 py-2 rounded-md border border-light-border-primary dark:border-neutral-600 bg-background text-light-text-primary dark:text-neutral-200 text-sm"
                 required
               />
               <button
@@ -227,7 +227,7 @@ export default function Footer({ variant = 'default' }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-8 border-t border-neutral-200 dark:border-neutral-700 pt-6 text-sm text-center text-neutral-500 dark:text-neutral-400">
+        <div className="mt-8 border-t border-light-border-primary dark:border-neutral-700 pt-6 text-sm text-center text-light-text-tertiary dark:text-neutral-400">
           &copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.
         </div>
       </div>

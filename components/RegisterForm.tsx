@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiUserPlus, FiCamera, FiX, FiCheckCircle, FiAlertCircle, FiShield, FiTruck, FiUsers, FiCreditCard, FiBuilding, FiKey, FiBriefcase } from "react-icons/fi";
+import { FiUser, FiMail, FiLock, FiEye, FiEyeOff, FiUserPlus, FiCamera, FiX, FiCheckCircle, FiAlertCircle, FiShield, FiTruck, FiUsers, FiCreditCard, FiKey, FiBriefcase } from "react-icons/fi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import EmailVerificationModal from "./EmailVerificationModal";
@@ -558,7 +558,7 @@ export default function RegisterForm() {
             {registrationFlow === 'admin' && (
               <div className="space-y-4 border-t pt-4">
                 <h4 className="text-sm font-medium text-purple-700 flex items-center">
-                  <FiBuilding className="w-4 h-4 mr-2" />
+                  <FiBriefcase className="w-4 h-4 mr-2" />
                   Business Information (Optional)
                 </h4>
                 

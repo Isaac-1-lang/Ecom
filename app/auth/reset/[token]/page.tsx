@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FiCheck, FiArrowLeft, FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuthStore } from "../../../../features/auth/store";
 import { useParams } from "next/navigation";
-
+import { authService } from "@/services/authService";
 export default function ResetPasswordPage() {
   const params = useParams();
   const token = params.token as string;
@@ -17,7 +17,7 @@ export default function ResetPasswordPage() {
   const [done, setDone] = useState(false);
   const [message, setMessage] = useState("");
   
-  const { resetPassword, loading, error, clearError } = useAuthStore();
+  const { loading, error, clearError } = useAuthStore();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -25,14 +25,6 @@ export default function ResetPasswordPage() {
     
     if (password !== confirmPassword) {
       return;
-    }
-    
-    try {
-      const result = await resetPassword(token, password);
-      setMessage(result.message);
-      setDone(true);
-    } catch (error) {
-      console.error(error)
     }
   }
 

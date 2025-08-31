@@ -7,7 +7,7 @@ interface OrderDetailPageProps {
 
 export default async function OrderDetailPage({ params }: OrderDetailPageProps) {
   const { id } = await params;
-  const order = await orderService.getOrder(id);
+  const order = await orderService.getOrderById(id);
   if (!order) return notFound();
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">

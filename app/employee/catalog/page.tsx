@@ -60,7 +60,6 @@ export default function EmployeeCatalogPage() {
                 (typeof item.image === 'string' ? item.image : item.image?.imageUrl);
               
               return imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
                 <img src={imageUrl} alt={item.name} className="w-full h-40 object-cover" />
               ) : null;
             })()}

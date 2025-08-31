@@ -94,7 +94,7 @@ export default function SearchBar() {
   return (
     <div className="relative w-full" ref={suggestionsRef}>
       <form onSubmit={submit} className="relative">
-        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
+        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-light-text-tertiary" />
         <input
           ref={inputRef}
           type="search"
@@ -103,7 +103,7 @@ export default function SearchBar() {
           onChange={handleInputChange}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
-          className="w-full rounded-lg border border-neutral-200 bg-white px-10 py-3 text-sm text-neutral-800 placeholder:text-neutral-400 outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
+          className="w-full rounded-lg border border-light-border-primary bg-light-surface-primary px-10 py-3 text-sm text-light-text-primary placeholder:text-light-text-muted outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200"
         />
         {query && (
           <button
@@ -113,36 +113,36 @@ export default function SearchBar() {
               setShowSuggestions(false);
               inputRef.current?.focus();
             }}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-neutral-100 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-light-interactive-hover transition-colors"
           >
-            <FiX className="h-4 w-4 text-neutral-500" />
+            <FiX className="h-4 w-4 text-light-text-tertiary" />
           </button>
         )}
       </form>
 
       {/* Search Suggestions */}
       {showSuggestions && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-neutral-200 rounded-lg shadow-soft-lg z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-light-surface-primary border border-light-border-primary rounded-lg shadow-soft-lg z-50 max-h-96 overflow-y-auto">
           {/* Recent Searches */}
           {recentSearches.length > 0 && (
-            <div className="p-4 border-b border-neutral-200">
+            <div className="p-4 border-b border-light-border-primary">
               <div className="flex items-center gap-2 mb-3">
-                <FiClock className="h-4 w-4 text-neutral-500" />
-                <span className="text-sm font-medium text-neutral-800">Recent Searches</span>
+                <FiClock className="h-4 w-4 text-light-text-tertiary" />
+                <span className="text-sm font-medium text-light-text-primary">Recent Searches</span>
               </div>
               <div className="space-y-2">
                 {recentSearches.map((search, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between group cursor-pointer p-2 rounded-md hover:bg-highlight transition-colors"
+                    className="flex items-center justify-between group cursor-pointer p-2 rounded-md hover:bg-light-interactive-hover dark:hover:bg-highlight transition-colors"
                     onClick={() => handleSuggestionClick(search)}
                   >
-                    <span className="text-sm text-neutral-800">{search}</span>
+                    <span className="text-sm text-light-text-primary">{search}</span>
                     <button
                       onClick={(e) => clearRecentSearch(search, e)}
-                      className="opacity-0 group-hover:opacity-100 p-1 rounded-full hover:bg-neutral-300/20 transition-all"
+                      className="opacity-0 group-hover:opacity-100 p-1 rounded-full hover:bg-light-interactive-hover transition-all"
                     >
-                      <FiX className="h-3 w-3 text-neutral-500" />
+                      <FiX className="h-3 w-3 text-light-text-tertiary" />
                     </button>
                   </div>
                 ))}
@@ -151,17 +151,17 @@ export default function SearchBar() {
           )}
 
           {/* Popular Searches */}
-          <div className="p-4 border-b border-neutral-200">
+          <div className="p-4 border-b border-light-border-primary">
             <div className="flex items-center gap-2 mb-3">
-              <FiTrendingUp className="h-4 w-4 text-neutral-500" />
-              <span className="text-sm font-medium text-neutral-800">Popular Searches</span>
+              <FiTrendingUp className="h-4 w-4 text-light-text-tertiary" />
+              <span className="text-sm font-medium text-light-text-primary">Popular Searches</span>
             </div>
             <div className="flex flex-wrap gap-2">
               {popularSearches.map((search, index) => (
                 <button
                   key={index}
                   onClick={() => handleSuggestionClick(search)}
-                  className="px-3 py-1 text-xs bg-neutral-100 text-neutral-700 rounded-full hover:bg-primary hover:text-white transition-colors"
+                  className="px-3 py-1 text-xs bg-light-bg-tertiary text-light-text-secondary rounded-full hover:bg-primary hover:text-white transition-colors"
                 >
                   {search}
                 </button>
@@ -171,7 +171,7 @@ export default function SearchBar() {
 
           {/* Quick Categories */}
           <div className="p-4">
-            <div className="text-sm font-medium text-neutral-800 mb-3">Quick Categories</div>
+            <div className="text-sm font-medium text-light-text-primary mb-3">Quick Categories</div>
             <div className="grid grid-cols-2 gap-2">
               {PRODUCT_CATEGORIES.slice(0, 6).map((category) => (
                 <button
@@ -180,7 +180,7 @@ export default function SearchBar() {
                     router.push(`/products?category=${category.id}`);
                     setShowSuggestions(false);
                   }}
-                  className="flex items-center gap-2 p-2 text-sm text-neutral-700 hover:bg-highlight rounded-md transition-colors text-left"
+                  className="flex items-center gap-2 p-2 text-sm text-light-text-secondary hover:bg-light-interactive-hover dark:hover:bg-highlight rounded-md transition-colors text-left"
                 >
                   <span className="text-lg">{category.icon}</span>
                   <span>{category.name}</span>

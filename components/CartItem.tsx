@@ -15,8 +15,8 @@ export default function CartItem({
   disabled?: boolean;
 }) {
   return (
-    <div className="flex items-center gap-4 rounded-lg border border-neutral-200 p-4 bg-white shadow-soft">
-      <div className="h-16 w-16 rounded-lg bg-neutral-100 overflow-hidden">
+    <div className="flex items-center gap-4 rounded-lg border border-light-border-primary p-4 bg-light-surface-primary shadow-soft">
+      <div className="h-16 w-16 rounded-lg bg-light-bg-tertiary overflow-hidden">
         {item.image && (
           <Image
             src={item.image} 
@@ -28,21 +28,21 @@ export default function CartItem({
         )}
       </div>
       <div className="flex-1">
-        <p className="font-medium text-neutral-800">{item.name}</p>
+        <p className="font-medium text-light-text-primary">{item.name}</p>
         <p className="text-sm text-primary font-semibold">{formatPrice(item.price)}</p>
         <div className="mt-3 flex items-center gap-2 text-sm">
           <button 
             onClick={() => onQuantityChange(Math.max(1, item.quantity - 1))} 
             disabled={disabled}
-            className="rounded-md border border-neutral-300 px-3 py-1 hover:bg-highlight disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="rounded-md border border-light-border-primary px-3 py-1 hover:bg-light-interactive-hover dark:hover:bg-highlight disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             -
           </button>
-          <span className="px-3 py-1 bg-neutral-100 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-100 rounded-md font-medium ring-1 ring-neutral-200 dark:ring-neutral-600">{item.quantity}</span>
+          <span className="px-3 py-1 bg-light-bg-tertiary dark:bg-neutral-700 text-light-text-primary dark:text-neutral-100 rounded-md font-medium ring-1 ring-light-border-primary dark:ring-neutral-600">{item.quantity}</span>
           <button 
             onClick={() => onQuantityChange(item.quantity + 1)} 
             disabled={disabled}
-            className="rounded-md border border-neutral-300 px-3 py-1 hover:bg-highlight disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="rounded-md border border-light-border-primary px-3 py-1 hover:bg-light-interactive-hover dark:hover:bg-highlight disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             +
           </button>

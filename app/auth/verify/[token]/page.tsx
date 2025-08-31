@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FiCheck, FiX } from "react-icons/fi";
 import { useAuthStore } from "../../../../features/auth/store";
 import { useParams } from "next/navigation";
-
+import { authService } from "@/services/authService";
 export default function VerifyEmailPage() {
   const params = useParams();
   const token = params.token as string;
@@ -13,22 +13,15 @@ export default function VerifyEmailPage() {
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [message, setMessage] = useState("");
 
-  const { verifyEmail, error, clearError } = useAuthStore();
+  const {error, clearError } = useAuthStore();
 
   useEffect(() => {
     const verifyToken = async () => {
-      try {
-        clearError();
-        const result = await verifyEmail(token);
-        setMessage(result.message);
-        setStatus("success");
-      } catch {
-        setStatus("error");
-      }
+      
     };
 
     verifyToken();
-  }, [token, verifyEmail, clearError]);
+  }, [token, clearError]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">

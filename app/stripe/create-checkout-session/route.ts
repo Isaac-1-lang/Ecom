@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
 const stripe = stripeSecretKey
-  ? new Stripe(stripeSecretKey, { apiVersion: '2023-10-16' })
+  ? new Stripe(stripeSecretKey)
   : null as unknown as Stripe;
 
 export async function POST(request: NextRequest) {

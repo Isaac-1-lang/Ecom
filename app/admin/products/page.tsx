@@ -61,8 +61,8 @@ export default function ProductsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">Products</h1>
-            <p className="text-neutral-600 dark:text-neutral-400 mt-1">Loading products...</p>
+            <h1 className="text-3xl font-bold text-light-text-primary dark:text-neutral-200">Products</h1>
+            <p className="text-light-text-secondary dark:text-neutral-400 mt-1">Loading products...</p>
           </div>
           <Link
             href="/admin/products/new"
@@ -75,7 +75,7 @@ export default function ProductsPage() {
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <FiRefreshCw className="h-8 w-8 text-primary animate-spin mx-auto mb-4" />
-            <p className="text-neutral-600">Loading products...</p>
+            <p className="text-light-text-secondary">Loading products...</p>
           </div>
         </div>
       </div>
@@ -87,8 +87,8 @@ export default function ProductsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">Products</h1>
-            <p className="text-neutral-600 dark:text-neutral-400 mt-1">Error loading products</p>
+            <h1 className="text-3xl font-bold text-light-text-primary dark:text-neutral-200">Products</h1>
+            <p className="text-light-text-secondary dark:text-neutral-400 mt-1">Error loading products</p>
           </div>
           <Link
             href="/admin/products/new"
@@ -119,8 +119,8 @@ export default function ProductsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-800 dark:text-neutral-200">Products</h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-1">Manage your product catalog</p>
+          <h1 className="text-3xl font-bold text-light-text-primary dark:text-neutral-200">Products</h1>
+          <p className="text-light-text-secondary dark:text-neutral-400 mt-1">Manage your product catalog</p>
         </div>
         <Link
           href="/admin/products/new"
@@ -132,18 +132,18 @@ export default function ProductsPage() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl shadow-soft border border-neutral-200 dark:border-neutral-700">
+      <div className="bg-light-surface-primary dark:bg-neutral-800 p-6 rounded-xl shadow-soft border border-light-border-primary dark:border-neutral-700">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1">
             <div className="relative">
-              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-light-text-tertiary" />
               <input
                 type="text"
                 placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 placeholder-neutral-500 dark:placeholder-neutral-400"
+                className="w-full pl-10 pr-4 py-2 border border-light-border-primary dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-light-surface-primary dark:bg-neutral-700 text-light-text-primary dark:text-neutral-200 placeholder-light-text-muted dark:placeholder-neutral-400"
               />
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function ProductsPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200"
+              className="px-4 py-2 border border-light-border-primary dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-light-surface-primary dark:bg-neutral-700 text-light-text-primary dark:text-neutral-200"
             >
               {categories.map(category => (
                 <option key={category} value={category}>
@@ -165,7 +165,7 @@ export default function ProductsPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-neutral-300 dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200"
+              className="px-4 py-2 border border-light-border-primary dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-light-surface-primary dark:bg-neutral-700 text-light-text-primary dark:text-neutral-200"
             >
               <option value="name">Sort by Name</option>
               <option value="price">Sort by Price</option>
@@ -177,37 +177,37 @@ export default function ProductsPage() {
       </div>
 
       {/* Products Table */}
-      <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-soft border border-neutral-200 dark:border-neutral-700 overflow-hidden">
+      <div className="bg-light-surface-primary dark:bg-neutral-800 rounded-xl shadow-soft border border-light-border-primary dark:border-neutral-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-neutral-50 border-b border-neutral-200">
+            <thead className="bg-light-bg-tertiary border-b border-light-border-primary">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary uppercase tracking-wider">
                   Product
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary uppercase tracking-wider">
                   Category
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary uppercase tracking-wider">
                   Price
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary uppercase tracking-wider">
                   Stock
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-neutral-200">
+            <tbody className="bg-light-surface-primary divide-y divide-light-border-primary">
               {filteredProducts.map((product) => (
-                <tr key={product.id} className="hover:bg-neutral-50">
+                <tr key={product.id} className="hover:bg-light-interactive-hover">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-12 w-12 rounded-lg bg-neutral-200 flex items-center justify-center overflow-hidden">
+                      <div className="h-12 w-12 rounded-lg bg-light-bg-tertiary flex items-center justify-center overflow-hidden">
                         {(() => {
                           const imageUrl = product.primaryImage?.imageUrl || 
                             (typeof product.image === 'string' ? product.image : product.image?.imageUrl);
@@ -215,13 +215,13 @@ export default function ProductsPage() {
                           return imageUrl ? (
                             <img src={imageUrl} alt={product.name} className="h-full w-full object-cover" />
                           ) : (
-                            <span className="text-neutral-400 text-xs">No Image</span>
+                            <span className="text-light-text-muted text-xs">No Image</span>
                           );
                         })()}
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-neutral-900">{product.name}</div>
-                        <div className="text-sm text-neutral-500">{product.brand}</div>
+                        <div className="text-sm font-medium text-light-text-primary">{product.name}</div>
+                        <div className="text-sm text-light-text-secondary">{product.brand}</div>
                       </div>
                     </div>
                   </td>
@@ -231,13 +231,13 @@ export default function ProductsPage() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-neutral-900">${product.price}</div>
+                    <div className="text-sm text-light-text-primary">${product.price}</div>
                     {product.originalPrice && product.originalPrice > product.price && (
-                      <div className="text-sm text-neutral-500 line-through">${product.originalPrice}</div>
+                      <div className="text-sm text-light-text-tertiary line-through">${product.originalPrice}</div>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-neutral-900">{product.stockQuantity}</div>
+                    <div className="text-sm text-light-text-primary">{product.stockQuantity}</div>
                     {product.stockQuantity < 10 && (
                       <div className="text-xs text-warning-600">Low Stock</div>
                     )}
@@ -292,17 +292,17 @@ export default function ProductsPage() {
         </div>
 
         {/* Pagination */}
-        <div className="bg-neutral-50 px-6 py-3 border-t border-neutral-200">
+        <div className="bg-light-bg-tertiary px-6 py-3 border-t border-light-border-primary">
           <div className="flex items-center justify-between">
-            <div className="text-sm text-neutral-700">
+            <div className="text-sm text-light-text-secondary">
               Showing {filteredProducts.length} of {products.length} products
             </div>
             <div className="flex items-center gap-2">
-              <button className="px-3 py-1 text-sm border border-neutral-300 rounded hover:bg-white transition-colors">
+              <button className="px-3 py-1 text-sm border border-light-border-primary rounded hover:bg-light-surface-primary transition-colors">
                 Previous
               </button>
               <span className="px-3 py-1 text-sm bg-primary text-white rounded">1</span>
-              <button className="px-3 py-1 text-sm border border-neutral-300 rounded hover:bg-white transition-colors">
+              <button className="px-3 py-1 text-sm border border-light-border-primary rounded hover:bg-light-surface-primary transition-colors">
                 Next
               </button>
             </div>

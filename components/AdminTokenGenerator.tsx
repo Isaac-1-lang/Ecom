@@ -27,39 +27,39 @@ export default function AdminTokenGenerator() {
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+    <div className="bg-light-surface-primary rounded-lg border border-light-border-primary p-6 shadow-soft">
       <div className="flex items-center gap-2 mb-4">
-        <FiKey className="w-5 h-5 text-purple-600" />
-        <h3 className="text-lg font-semibold text-gray-900">Employee Registration Token Generator</h3>
+        <FiKey className="w-5 h-5 text-primary" />
+        <h3 className="text-lg font-semibold text-light-text-primary">Employee Registration Token Generator</h3>
       </div>
       
-      <p className="text-sm text-gray-600 mb-4">
+      <p className="text-sm text-light-text-secondary mb-4">
         Generate a secure token for employee registration. Share this token with employees who need to register.
       </p>
 
       <div className="space-y-4">
         <button
           onClick={generateToken}
-          className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-primary hover:bg-primary-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           <FiRefreshCw className="w-4 h-4" />
           Generate New Token
         </button>
 
         {generatedToken && (
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <div className="bg-light-bg-tertiary border border-light-border-primary rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-700 mb-1">Generated Token:</p>
-                <p className="text-sm text-gray-900 font-mono break-all">{generatedToken}</p>
+                <p className="text-sm font-medium text-light-text-secondary mb-1">Generated Token:</p>
+                <p className="text-sm text-light-text-primary font-mono break-all">{generatedToken}</p>
               </div>
               <button
                 onClick={copyToClipboard}
-                className="ml-3 p-2 text-gray-500 hover:text-gray-700 transition-colors"
+                className="ml-3 p-2 text-light-text-tertiary hover:text-light-text-primary transition-colors"
                 title="Copy to clipboard"
               >
                 {copied ? (
-                  <FiCheck className="w-4 h-4 text-green-600" />
+                  <FiCheck className="w-4 h-4 text-success" />
                 ) : (
                   <FiCopy className="w-4 h-4" />
                 )}
@@ -68,8 +68,8 @@ export default function AdminTokenGenerator() {
           </div>
         )}
 
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-          <p className="text-xs text-blue-800">
+        <div className="bg-primary/10 border border-primary/20 rounded-lg p-3">
+          <p className="text-xs text-primary-800 dark:text-primary-200">
             <strong>Note:</strong> This token is required for employee registration. Keep it secure and share it only with authorized employees.
           </p>
         </div>

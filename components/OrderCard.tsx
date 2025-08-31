@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Order, OrderItem } from "../types/order";
+import { Order, OrderItem } from "../services/orderService";
 
 export default function OrderCard({
   order,

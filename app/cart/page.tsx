@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FiArrowLeft, FiTrash2, FiPlus, FiMinus, FiShoppingBag, FiCreditCard, FiTruck } from 'react-icons/fi';
@@ -49,26 +49,26 @@ export default function CartPage() {
     setDiscountCode('');
   };
 
-  const calculateShipping = () => {
+  const calculateShipping =useCallback( () => {
     // Simple shipping calculation
     if (subtotal >= 50) {
       setShipping(0); // Free shipping over $50
     } else {
       setShipping(5.99); // Standard shipping
     }
-  };
+  }, [subtotal]);
 
-  const calculateTax = () => {
+  const calculateTax =useCallback( () => {
     // Simple tax calculation (8% rate)
     const taxAmount = subtotal * 0.08;
     setTax(taxAmount);
-  };
+  }, [subtotal]);
 
   // Calculate shipping, tax, and total when subtotal changes
   useEffect(() => {
     calculateShipping();
     calculateTax();
-  }, [subtotal]);
+  }, [calculateShipping, calculateTax]);
 
   // Calculate total whenever subtotal, shipping, tax, or discount changes
   useEffect(() => {

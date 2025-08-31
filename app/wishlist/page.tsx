@@ -38,7 +38,7 @@ export default function WishlistPage() {
         id: item.id,
         name: item.name,
         price: item.price,
-        image: item.image ?? '/',
+        image: typeof item.image === 'string' ? item.image : item.image?.imageUrl ?? '/',
         quantity: 1,
       });
     } finally {

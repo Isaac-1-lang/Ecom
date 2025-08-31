@@ -4,6 +4,7 @@ import { useAuthStore } from "../../features/auth/store";
 import { useEffect } from "react";
 import Link from "next/link";
 import { FiUser, FiShoppingBag, FiHeart, FiSettings } from "react-icons/fi";
+import { UserRole } from "@/types/auth";
 
 export default function DashboardPage() {
   const { user, isInitialized } = useAuthStore();
@@ -44,7 +45,12 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Welcome back, {user.name || user.email}!
+          Welcome back, {user.firstName || user.email}!
+          {user.role === UserRole.ADMIN && (
+            <span className="text-sm text-gray-600 dark:text-gray-400">
+              Admin
+            </span>
+          )}
         </h1>
         <p className="text-gray-600 dark:text-gray-400 mt-2">
           Here&lsquo;s an overview of your account and recent activity.
@@ -140,10 +146,10 @@ export default function DashboardPage() {
               <p className="text-sm text-gray-600 dark:text-gray-400">Email</p>
               <p className="font-medium text-gray-900 dark:text-white">{user.email}</p>
             </div>
-            {user.name && (
+            {user.firstName && (
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Name</p>
-                <p className="font-medium text-gray-900 dark:text-white">{user.name}</p>
+                <p className="font-medium text-gray-900 dark:text-white">{user.firstName} {user.lastName}</p>
               </div>
             )}
             <div>

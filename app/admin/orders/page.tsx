@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useOrdersStore } from "../../../features/orders/store";
-import { Order, OrderStatusUpdate } from "../../../types/order";
+import { Order} from "../../../services/orderService";
 import { orderService } from "../../../services/orderService";
 
 export default function AdminOrdersPage() {

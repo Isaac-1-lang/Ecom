@@ -200,24 +200,20 @@ export function NotificationBell() {
 }
 
 // Utility functions for common notifications
-export const notificationUtils = {
-  success: (title: string, message: string, options?: Partial<Notification>) => {
-    const { addNotification } = useNotifications();
-    addNotification({ type: 'success', title, message, ...options });
-  },
-  
-  error: (title: string, message: string, options?: Partial<Notification>) => {
-    const { addNotification } = useNotifications();
-    addNotification({ type: 'error', title, message, ...options });
-  },
-  
-  warning: (title: string, message: string, options?: Partial<Notification>) => {
-    const { addNotification } = useNotifications();
-    addNotification({ type: 'warning', title, message, ...options });
-  },
-  
-  info: (title: string, message: string, options?: Partial<Notification>) => {
-    const { addNotification } = useNotifications();
-    addNotification({ type: 'info', title, message, ...options });
-  },
-};
+export function useNotificationUtils() {
+  const { addNotification } = useNotifications();
+  return {
+    success: (title:string, message:string, options?:Partial<Notification>) => {
+      addNotification({ type: 'success', title, message, ...options });
+    },
+    error: (title:string, message:string, options?:Partial<Notification>) => {
+      addNotification({ type: 'error', title, message, ...options });
+    },
+    warning: (title:string, message:string, options?:Partial<Notification>) => {
+      addNotification({ type: 'warning', title, message, ...options });
+    },
+    info: (title:string, message:string, options?:Partial<Notification>) => {
+      addNotification({ type: 'info', title, message, ...options });
+    },
+  }
+}

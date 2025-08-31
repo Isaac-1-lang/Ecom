@@ -1,8 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { orderService } from "../../services/orderService";
-import { Order, CreateOrderRequest } from "../../types/order";
+import { orderService, Order, CreateOrderRequest } from "../../services/orderService";
 
 type OrdersState = {
   orders: Order[];

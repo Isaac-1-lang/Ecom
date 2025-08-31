@@ -11,9 +11,11 @@ interface AuthState {
   error: string | null;
   setUser: (user: User | null) => void;
   setToken: (token: string | null) => void;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
   logout: () => void;
   initialize: () => void;
   forgotPassword: (email: string) => Promise<{ message: string }>;
+  resendVerification: (email: string) => Promise<void>;
   clearError: () => void;
 }
 
@@ -26,6 +28,24 @@ export const useAuthStore = create<AuthState>((set) => ({
   
   setUser: (user) => set({ user }),
   setToken: (token) => set({ token }),
+  
+  login: async (credentials: { email: string; password: string }) => {
+    set({ loading: true, error: null });
+    try {
+      const result = await authService.login(credentials);
+      set({ 
+        user: result.user, 
+        token: result.token,
+        loading: false 
+      });
+    } catch (error: any) {
+      set({ 
+        loading: false, 
+        error: error.message || 'Login failed' 
+      });
+      throw error;
+    }
+  },
   
   logout: () => {
     set({ user: null, token: null });
@@ -70,4 +90,20 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
   
   clearError: () => set({ error: null }),
+  
+  resendVerification: async (email: string) => {
+    set({ loading: true, error: null });
+    try {
+      // For now, just simulate the resend functionality
+      // In a real implementation, this would call the auth service
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      set({ loading: false });
+    } catch (error: any) {
+      set({ 
+        loading: false, 
+        error: error.message || 'Failed to resend verification email' 
+      });
+      throw error;
+    }
+  },
 }));
