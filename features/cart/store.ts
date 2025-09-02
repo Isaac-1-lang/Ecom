@@ -9,6 +9,7 @@ export type CartItem = {
   price: number;
   image: string;
   quantity: number;
+  variantId?: string; // Optional variant ID for products with variants
 };
 
 type CartState = {

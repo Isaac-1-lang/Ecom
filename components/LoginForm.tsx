@@ -136,7 +136,7 @@ export default function LoginForm() {
         localStorage.setItem('authToken', 'admin-token-123');
         localStorage.setItem('user', JSON.stringify(adminUser));
         
-        setSuccessMessage('Welcome Admin! Redirecting to admin dashboard...');
+        setSuccessMessage('Welcome! Redirecting...');
         setTimeout(() => router.push('/admin'), 1000);
         return;
       }
@@ -159,7 +159,7 @@ export default function LoginForm() {
         localStorage.setItem('authToken', 'employee-token-123');
         localStorage.setItem('user', JSON.stringify(employeeUser));
         
-        setSuccessMessage('Welcome Employee! Redirecting to employee dashboard...');
+        setSuccessMessage('Welcome! Redirecting...');
         setTimeout(() => router.push('/employee'), 1000);
         return;
       }
@@ -182,7 +182,7 @@ export default function LoginForm() {
         localStorage.setItem('authToken', 'delivery-token-123');
         localStorage.setItem('user', JSON.stringify(deliveryUser));
         
-        setSuccessMessage('Welcome Delivery Agent! Redirecting to delivery dashboard...');
+        setSuccessMessage('Welcome! Redirecting...');
         setTimeout(() => router.push('/delivery'), 1000);
         return;
       }
@@ -199,7 +199,7 @@ export default function LoginForm() {
           localStorage.setItem('authToken', token);
           localStorage.setItem('user', JSON.stringify(user));
 
-          setSuccessMessage('Welcome! Redirecting to dashboard...');
+          setSuccessMessage('Welcome! Redirecting...');
           // Primary navigation
           router.replace('/dashboard');
           // Hard fallback in case router is blocked in dev

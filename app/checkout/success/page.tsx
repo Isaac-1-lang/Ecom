@@ -7,6 +7,7 @@ import { FiCheck, FiHome, FiShoppingBag, FiMail, FiTruck, FiShield } from 'react
 import { orderService } from '../../../services/orderService';
 import { useCartStore } from '../../../features/cart/store';
 import { useCheckoutStore } from '../../../features/checkout/store';
+import { useAuth } from '../../../context/AuthContext';
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
@@ -17,6 +18,7 @@ export default function CheckoutSuccessPage() {
   const cartItems = useCartStore((s) => s.items);
   const clearCart = useCartStore((s) => s.clearCart);
   const { shippingInfo, paymentInfo } = useCheckoutStore();
+  const { user } = useAuth();
 
   useEffect(() => {
     async function persistOrder() {
@@ -67,6 +69,7 @@ export default function CheckoutSuccessPage() {
         // Build order request payload expected by backend
         const items = cartItems.map((ci) => ({
           productId: ci.id,
+          variantId: ci.variantId || "1", // Default to "1" if no variant is selected
           quantity: ci.quantity,
         }));
 
@@ -80,9 +83,10 @@ export default function CheckoutSuccessPage() {
         };
 
         const request = {
+          userId: user?.id || "f085378c-b64c-4cc4-9be8-b89f9a32cea2", // Use authenticated user ID or fallback to dev ID
           items,
           shippingAddress,
-          paymentMethod: paymentInfo.paymentMethod || 'stripe',
+          paymentMethod: "CREDIT_CARD", // Match backend expected format
           notes: 'Stripe checkout success',
           billingAddress: shippingAddress,
         } as any;

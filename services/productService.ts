@@ -600,63 +600,41 @@ export const productService = {
         });
       }
 
-      // Add variants data
+      // Add variants as a single JSON field (only required keys)
       if (productData.variants && productData.variants.length > 0) {
-        productData.variants.forEach((variant, index) => {
-          formData.append(`variants[${index}].variantSku`, variant.variantSku);
-          if (variant.variantBarcode) formData.append(`variants[${index}].variantBarcode`, variant.variantBarcode);
-          formData.append(`variants[${index}].price`, variant.price.toString());
-          if (variant.compareAtPrice) formData.append(`variants[${index}].compareAtPrice`, variant.compareAtPrice.toString());
-          if (variant.costPrice) formData.append(`variants[${index}].costPrice`, variant.costPrice.toString());
-          formData.append(`variants[${index}].stockQuantity`, variant.stockQuantity.toString());
-          if (variant.lowStockThreshold) formData.append(`variants[${index}].lowStockThreshold`, variant.lowStockThreshold.toString());
-          if (variant.isActive !== undefined) formData.append(`variants[${index}].isActive`, variant.isActive.toString());
-          if (variant.sortOrder) formData.append(`variants[${index}].sortOrder`, variant.sortOrder.toString());
-          
-          // Add variant attributes
-          Object.entries(variant.attributes).forEach(([key, value]) => {
-            formData.append(`variants[${index}].attributes.${key}`, value);
-          });
-          
-          if (variant.variantImages) {
-            variant.variantImages.forEach((image, imgIndex) => {
-              formData.append(`variants[${index}].variantImages[${imgIndex}]`, image);
-            });
-          }
-          
-          if (variant.imageMetadata) formData.append(`variants[${index}].imageMetadata`, variant.imageMetadata);
-          if (variant.salePrice) formData.append(`variants[${index}].salePrice`, variant.salePrice.toString());
-          if (variant.heightCm) formData.append(`variants[${index}].heightCm`, variant.heightCm.toString());
-          if (variant.widthCm) formData.append(`variants[${index}].widthCm`, variant.widthCm.toString());
-          if (variant.lengthCm) formData.append(`variants[${index}].lengthCm`, variant.lengthCm.toString());
-          if (variant.weightKg) formData.append(`variants[${index}].weightKg`, variant.weightKg.toString());
-          if (variant.material) formData.append(`variants[${index}].material`, variant.material);
-          if (variant.color) formData.append(`variants[${index}].color`, variant.color);
-          if (variant.size) formData.append(`variants[${index}].size`, variant.size);
-          if (variant.shape) formData.append(`variants[${index}].shape`, variant.shape);
-          if (variant.style) formData.append(`variants[${index}].style`, variant.style);
-          if (variant.isInStock !== undefined) formData.append(`variants[${index}].isInStock`, variant.isInStock.toString());
-          if (variant.isBackorderable !== undefined) formData.append(`variants[${index}].isBackorderable`, variant.isBackorderable.toString());
-          if (variant.backorderQuantity) formData.append(`variants[${index}].backorderQuantity`, variant.backorderQuantity.toString());
-          if (variant.backorderMessage) formData.append(`variants[${index}].backorderMessage`, variant.backorderMessage);
-          if (variant.requiresSpecialShipping !== undefined) formData.append(`variants[${index}].requiresSpecialShipping`, variant.requiresSpecialShipping.toString());
-          if (variant.shippingNotes) formData.append(`variants[${index}].shippingNotes`, variant.shippingNotes);
-          if (variant.additionalShippingCost) formData.append(`variants[${index}].additionalShippingCost`, variant.additionalShippingCost.toString());
-          
-          // Add variant warehouse stock
-          if (variant.warehouseStock && variant.warehouseStock.length > 0) {
-            variant.warehouseStock.forEach((warehouse, wIndex) => {
-              formData.append(`variants[${index}].warehouseStock[${wIndex}].warehouseId`, warehouse.warehouseId.toString());
-              formData.append(`variants[${index}].warehouseStock[${wIndex}].stockQuantity`, warehouse.stockQuantity.toString());
-              formData.append(`variants[${index}].warehouseStock[${wIndex}].lowStockThreshold`, warehouse.lowStockThreshold.toString());
-              formData.append(`variants[${index}].warehouseStock[${wIndex}].reorderPoint`, warehouse.reorderPoint.toString());
-              if (warehouse.warehousePrice) formData.append(`variants[${index}].warehouseStock[${wIndex}].warehousePrice`, warehouse.warehousePrice.toString());
-              if (warehouse.warehouseCostPrice) formData.append(`variants[${index}].warehouseStock[${wIndex}].warehouseCostPrice`, warehouse.warehouseCostPrice.toString());
-              if (warehouse.isAvailable !== undefined) formData.append(`variants[${index}].warehouseStock[${wIndex}].isAvailable`, warehouse.isAvailable.toString());
-              if (warehouse.notes) formData.append(`variants[${index}].warehouseStock[${wIndex}].notes`, warehouse.notes);
+        const slimVariants = productData.variants.map((variant, index) => ({
+          variantSku: variant.variantSku,
+          price: variant.price,
+          stockQuantity: variant.stockQuantity,
+          lowStockThreshold: variant.lowStockThreshold ?? 5,
+          sortOrder: variant.sortOrder ?? index,
+          isActive: variant.isActive ?? true,
+          attributes: variant.attributes || {}
+        }));
+        formData.append('variants', JSON.stringify(slimVariants));
+
+        // Flatten and append variant images at top-level
+        const allVariantImages: File[] = [];
+        const variantImageMapping: Array<{ variantIndex: number; imageIndex: number }> = [];
+
+        productData.variants.forEach((variant, vIndex) => {
+          const images = (variant as any).variantImages as unknown as File[] | undefined;
+          if (images && images.length > 0) {
+            images.forEach((file, imgIdx) => {
+              allVariantImages.push(file);
+              variantImageMapping.push({ variantIndex: vIndex, imageIndex: imgIdx });
             });
           }
         });
+
+        if (allVariantImages.length > 0) {
+          allVariantImages.forEach((file) => {
+            formData.append('variantImages', file);
+          });
+          formData.append('variantImageMapping', JSON.stringify(variantImageMapping));
+          const variantImageMetadata = allVariantImages.map((f, idx) => ({ name: f.name, sortOrder: idx }));
+          formData.append('variantImageMetadata', JSON.stringify(variantImageMetadata));
+        }
       }
 
       // Add dimensions string
@@ -822,6 +800,55 @@ export const productService = {
       }
       
       console.log('🔍 === END BACKEND FIELD COMPARISON ===');
+
+      // Build a plain JSON payload snapshot for Swagger testing/debugging
+      const debugJsonPayload: any = {
+        name: productData.name,
+        description: productData.description,
+        sku: productData.sku,
+        barcode: productData.barcode,
+        basePrice: productData.basePrice,
+        salePrice: productData.salePrice,
+        costPrice: productData.costPrice,
+        stockQuantity: productData.stockQuantity,
+        lowStockThreshold: productData.lowStockThreshold,
+        categoryId: productData.categoryId,
+        brandId: productData.brandId,
+        discountId: productData.discountId,
+        model: productData.model,
+        slug: productData.slug,
+        isActive: productData.isActive,
+        isFeatured: productData.isFeatured,
+        isNewArrival: productData.isNewArrival,
+        isOnSale: productData.isOnSale,
+        productImages: productData.productImages?.map((f) => ({ name: (f as File).name, size: (f as File).size, type: (f as File).type })) || [],
+        productVideos: productData.productVideos || [],
+        imageMetadata: productData.imageMetadata || [],
+        videoMetadata: productData.videoMetadata,
+        variants: productData.variants?.map((v: any, idx: number) => ({
+          variantSku: v.variantSku,
+          variantBarcode: v.variantBarcode,
+          price: v.price,
+          compareAtPrice: v.compareAtPrice,
+          costPrice: v.costPrice,
+          stockQuantity: v.stockQuantity,
+          lowStockThreshold: v.lowStockThreshold,
+          sortOrder: v.sortOrder,
+          isActive: v.isActive,
+          attributes: v.attributes || {},
+          // Debug-only: show image names/counts instead of File objects
+          variantImagesDebug: Array.isArray(v.variantImages)
+            ? (v.variantImages as any[]).map((f) => (f && typeof (f as any).name === 'string') ? (f as any).name : '[inline/image]')
+            : []
+        })) || [],
+      };
+
+      console.log('\n🧪 === PRODUCT PAYLOAD FOR SWAGGER (COPY/PASTE) ===');
+      console.log(JSON.stringify(debugJsonPayload, null, 2));
+      console.log('=== END PRODUCT PAYLOAD ===\n');
+      if (typeof window !== 'undefined') {
+        (window as any).latestProductPayload = debugJsonPayload;
+      }
       
       // Add images
       if (productData.productImages && productData.productImages.length > 0) {

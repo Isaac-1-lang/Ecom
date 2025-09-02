@@ -1,10 +1,10 @@
-# 🛠️ Admin Dashboard - Complete Product Creation Guide
+# Admin Dashboard - Complete Product Creation Guide
 
-## 📋 Overview
+## Overview
 
 This guide covers the admin dashboard functionality, specifically focusing on product creation and category management. The admin dashboard allows you to create, manage, and organize products in your e-commerce system.
 
-## 🗂️ Database Tables Structure
+##Database Tables Structure
 
 ### **Product Table Fields**
 

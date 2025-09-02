@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useCartStore } from '../../features/cart/store';
 import { useCheckoutStore } from '../../features/checkout/store';
 import AddressForm from '../../components/AddressForm';
+import { checkoutService } from '../../services/checkoutService';
+import { useAuth } from '../../hooks/useAuth';
 import { ShippingInfo } from '../../features/checkout/store';
 import { FiShoppingBag, FiTruck, FiShield, FiCreditCard, FiLock } from 'react-icons/fi';
 
@@ -13,6 +15,7 @@ export default function CheckoutPage() {
   const cartItems = useCartStore((state) => state.items);
   const { shippingInfo, setShippingInfo } = useCheckoutStore();
   const [isProcessing, setIsProcessing] = useState(false);
+  const { user } = useAuth();
 
   // Redirect if cart is empty
   if (cartItems.length === 0) {
@@ -24,30 +27,62 @@ export default function CheckoutPage() {
     setIsProcessing(true);
     
     try {
-      // Create Stripe checkout session
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // Map frontend cart + shipping into backend expected payload
+      const backendPayload: any = {
+        items: cartItems.map((ci) => ({
+          id: 0,
+          productId: ci.id,
+          variantId: ci.variantId ? Number(ci.variantId) : 1,
+          sku: ci.id,
+          productName: ci.name,
+          productImage: ci.image,
+          quantity: ci.quantity,
+          // Send prices as integer minor units (cents)
+          price: Math.round(ci.price * 100),
+          totalPrice: Math.round(ci.price * 100) * ci.quantity,
+          addedAt: new Date().toISOString(),
+          inStock: true,
+          availableStock: ci.quantity,
+          variantBased: Boolean(ci.variantId),
+        })),
+        shippingAddress: {
+          streetAddress: shippingInfo.address.trim(),
+          city: shippingInfo.city.trim(),
+          state: shippingInfo.state.trim(),
+          postalCode: shippingInfo.zipCode.trim(),
+          country: shippingInfo.country,
         },
-        body: JSON.stringify({
-          items: cartItems,
-          successUrl: `${window.location.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancelUrl: `${window.location.origin}/cart`,
-          customerEmail: shippingInfo.email,
-        }),
-      });
+        // Use uppercase ISO currency, backend can downcase if needed
+        currency: 'USD',
+        userId: user?.id || undefined,
+        platform: 'web',
+        successUrl: `${window.location.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${window.location.origin}/cart`,
+        customerEmail: shippingInfo.email,
+      };
 
-      if (!response.ok) {
-        throw new Error('Failed to create checkout session');
-      }
+      // Debug: Log the complete payload being sent
+      console.log('🔍 === CHECKOUT SESSION PAYLOAD ===');
+      console.log('Complete JSON payload:', JSON.stringify(backendPayload, null, 2));
+      console.log('Payload breakdown:');
+      console.log('  - Items count:', backendPayload.items.length);
+      console.log('  - Total items value:', backendPayload.items.reduce((sum: number, item: any) => sum + item.totalPrice, 0));
+      console.log('  - Currency:', backendPayload.currency);
+      console.log('  - User ID:', backendPayload.userId || 'Guest');
+      console.log('  - Platform:', backendPayload.platform);
+      console.log('  - Shipping address:', backendPayload.shippingAddress);
+      console.log('  - Success URL:', backendPayload.successUrl);
+      console.log('  - Cancel URL:', backendPayload.cancelUrl);
+      console.log('  - Customer email:', backendPayload.customerEmail);
+      console.log('🔍 === END CHECKOUT PAYLOAD ===');
 
-      const { url } = await response.json();
+      // Create checkout session via backend (server handles Stripe keys)
+      const { url } = await checkoutService.createUserSession(backendPayload);
       
       // Redirect to Stripe checkout
       window.location.href = url;
-    } catch (error) {
-      console.error('Checkout error:', error);
+    } catch (error: any) {
+      console.error('Checkout error:', error?.message || error);
       setIsProcessing(false);
       // You could show an error toast here
     }

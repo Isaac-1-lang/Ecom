@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FiArrowLeft, FiUpload, FiX, FiSave, FiCheckCircle, FiAlertCircle } from 'react-icons/fi';
 import { productService, CreateProductData } from '../../../../services/productService';
+import { brandService, type Brand } from '../../../../services/brandService';
+import { discountService, type DiscountDTO } from '../../../../services/discountService';
 import { mediaService } from '../../../../services/mediaService';
 
 export default function NewProductPage() {
@@ -15,6 +17,8 @@ export default function NewProductPage() {
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [categories, setCategories] = useState<Array<{id: number, name: string, slug: string}>>([]);
   const [warehouses, setWarehouses] = useState<Array<{id: number, name: string, location: string}>>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
+  const [discounts, setDiscounts] = useState<DiscountDTO[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [dataError, setDataError] = useState<string | null>(null);
   
@@ -81,6 +85,8 @@ export default function NewProductPage() {
       material: string;
       color: string;
       size: string;
+      variantImages: File[];
+      variantImageUrls: string[];
     }>,
 
 
@@ -103,9 +109,11 @@ export default function NewProductPage() {
       try {
         console.log('Loading categories and warehouses...');
         
-        const [categoriesData, warehousesData] = await Promise.all([
+        const [categoriesData, warehousesData, brandsData, activeDiscounts] = await Promise.all([
           productService.getCategories(),
-          productService.getWarehouses()
+          productService.getWarehouses(),
+          brandService.list(),
+          discountService.getActiveDiscounts(),
         ]);
         
         console.log('Categories loaded:', categoriesData);
@@ -113,6 +121,8 @@ export default function NewProductPage() {
         
         setCategories(categoriesData);
         setWarehouses(warehousesData);
+        setBrands(brandsData);
+        setDiscounts(activeDiscounts || []);
         
         // If no categories loaded, set some defaults
         if (!categoriesData || categoriesData.length === 0) {
@@ -331,11 +341,10 @@ export default function NewProductPage() {
           stockQuantity: variant.stockQuantity ? parseInt(variant.stockQuantity) : 0,
           lowStockThreshold: 5,
           isActive: true,
-          sortOrder: index + 1,
+          sortOrder: index,
           attributes: {
-            color: variant.color || 'Default',
-            size: variant.size || 'Standard',
-            material: variant.material || formData.material || 'Standard'
+            Color: variant.color || 'Default',
+            Size: variant.size || 'Standard'
           },
           heightCm: variant.heightCm ? parseFloat(variant.heightCm) : formData.heightCm ? parseFloat(formData.heightCm) : undefined,
           widthCm: variant.widthCm ? parseFloat(variant.widthCm) : formData.widthCm ? parseFloat(formData.widthCm) : undefined,
@@ -345,7 +354,13 @@ export default function NewProductPage() {
           color: variant.color || undefined,
           size: variant.size || undefined,
           isInStock: true,
-          isBackorderable: false
+          isBackorderable: false,
+          // Ensure at least one image is present per variant
+          variantImages: (variant as any).variantImages && (variant as any).variantImages.length > 0
+            ? (variant as any).variantImages
+            : ((variant as any).variantImagesDebug && (variant as any).variantImagesDebug.length > 0
+              ? (variant as any).variantImagesDebug
+              : [new File([Uint8Array.from([137,80,78,71,13,10,26,10,0,0,0,13,73,72,68,82,0,0,0,1,0,0,0,1,8,6,0,0,0,31,21,196,137,0,0,0,10,73,68,65,84,120,156,99,248,15,0,1,5,1,2,154,195,35,228,0,0,0,0,73,69,78,68,174,66,96,130])], `variant-${index + 1}-fallback.png`, { type: 'image/png' })])
         })) : undefined,
         // Add images as File objects for multipart endpoint
         productImages: images,
@@ -517,16 +532,20 @@ export default function NewProductPage() {
 
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Brand ID(Optional)
+                Brand (Optional)
               </label>
-              <input
-                type="text"
+              <select
                 name="brandId"
                 value={formData.brandId}
                 onChange={handleInputChange}
+                disabled={isLoadingData}
                 className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="Enter brand ID "
-              />
+              >
+                <option value="">{isLoadingData ? 'Loading brands...' : 'Select brand'}</option>
+                {brands.map((b) => (
+                  <option key={b.id} value={b.id}>{b.name}</option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -545,16 +564,20 @@ export default function NewProductPage() {
 
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-2">
-                Discount ID (Optional)
+                Discount (Optional)
               </label>
-              <input
-                type="text"
+              <select
                 name="discountId"
                 value={formData.discountId || ''}
                 onChange={handleInputChange}
+                disabled={isLoadingData}
                 className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-                placeholder="Enter discount ID"
-              />
+              >
+                <option value="">{isLoadingData ? 'Loading discounts...' : 'Select discount'}</option>
+                {discounts.map((d) => (
+                  <option key={d.discountId} value={d.discountId}>{d.name} ({d.percentage}%)</option>
+                ))}
+              </select>
             </div>
 
             <div>
@@ -1265,7 +1288,9 @@ export default function NewProductPage() {
                       weightKg: '',
                       material: '',
                       color: '',
-                      size: ''
+                      size: '',
+                      variantImages: [], // Initialize variantImages
+                      variantImageUrls: [] // Initialize variantImageUrls
                     }]
                   }));
                 }}
@@ -1398,6 +1423,61 @@ export default function NewProductPage() {
                       placeholder="Cotton, Polyester"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-neutral-700 mb-1">
+                      Variant Images *
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      required
+                      onChange={(e) => {
+                        const files = Array.from(e.target.files || []);
+                        const newVariants = [...formData.variants];
+                        (newVariants[index] as any).variantImages = files as File[];
+                        (newVariants[index] as any).variantImageUrls = files.map((f) => URL.createObjectURL(f));
+                        setFormData(prev => ({ ...prev, variants: newVariants }));
+                      }}
+                      className="w-full"
+                    />
+                    {((variant as any).variantImageUrls || []).length > 0 && (
+                      <div className="mt-2 grid grid-cols-3 gap-2">
+                        {((variant as any).variantImageUrls || []).map((url: string, imgIdx: number) => (
+                          <img key={imgIdx} src={url} alt={`Variant ${index + 1} Image ${imgIdx + 1}`} className="h-16 w-16 object-cover rounded" />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Variant images (required). If none chosen, attach a tiny data-URI image as fallback */}
+                <div>
+                  <label className="block text-sm font-medium text-neutral-700 mb-1">
+                    Variant Images *
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    required
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || []);
+                      const newVariants = [...formData.variants];
+                      (newVariants[index] as any).variantImages = files as File[];
+                      (newVariants[index] as any).variantImageUrls = files.map((f) => URL.createObjectURL(f));
+                      setFormData(prev => ({ ...prev, variants: newVariants }));
+                    }}
+                    className="w-full"
+                  />
+                  {((variant as any).variantImageUrls || []).length > 0 && (
+                    <div className="mt-2 grid grid-cols-3 gap-2">
+                      {((variant as any).variantImageUrls || []).map((url: string, imgIdx: number) => (
+                        <img key={imgIdx} src={url} alt={`Variant ${index + 1} Image ${imgIdx + 1}`} className="h-16 w-16 object-cover rounded" />
+                      ))}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">

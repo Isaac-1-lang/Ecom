@@ -46,8 +46,10 @@ export interface Order {
 }
 
 export interface CreateOrderRequest {
+  userId: string;
   items: Array<{
     productId: string;
+    variantId: string;
     quantity: number;
   }>;
   shippingAddress: {

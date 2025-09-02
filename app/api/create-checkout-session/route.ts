@@ -5,8 +5,9 @@ export const runtime = 'nodejs';
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
+// Initialize Stripe using the default account API version to avoid mismatches
 const stripe = stripeSecretKey
-  ? new Stripe(stripeSecretKey, { apiVersion: '2025-07-30.basil' })
+  ? new Stripe(stripeSecretKey)
   : null as unknown as Stripe;
 
 export async function POST(request: NextRequest) {
@@ -67,12 +68,15 @@ export async function POST(request: NextRequest) {
       };
     });
 
+    // Determine origin for building absolute URLs if env var is missing
+    const requestOrigin = request.headers.get('origin') || process.env.NEXT_PUBLIC_BASE_URL || '';
+
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: successUrl || `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
+      success_url: successUrl || `${requestOrigin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: cancelUrl || `${requestOrigin}/cart`,
       metadata: {
         order_id: `order_${Date.now()}`,
       },
@@ -115,10 +119,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ sessionId: session.id, url: session.url });
   } catch (error: any) {
     console.error('Error creating checkout session:', error);
+    const statusCode = typeof error?.statusCode === 'number' ? error.statusCode : 500;
     const message = error?.message || 'Failed to create checkout session';
     return NextResponse.json(
       { error: message },
-      { status: 500 }
+      { status: statusCode }
     );
   }
 }

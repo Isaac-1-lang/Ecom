@@ -43,8 +43,10 @@ export interface Order {
 }
 
 export interface CreateOrderRequest {
+  userId: string;
   items: Array<{
     productId: string;
+    variantId: string;
     quantity: number;
   }>;
   shippingAddress: {
@@ -194,13 +196,13 @@ export const orderService = {
     try {
       console.log('Fetching orders from customer endpoint...');
       
-      // Use the customer-specific endpoint which handles authentication automatically
-      const response = await api.get<JavaOrderResponse<JavaOrder[]>>('/api/v1/customer/orders');
+      // List orders for current user
+      const response = await api.get<JavaOrderResponse<JavaOrder[]>>('/api/v1/orders');
       
       // If customer endpoint fails, try admin endpoint as fallback
       if (!response.data.success || !response.data.data) {
-        console.log('Customer endpoint failed, trying admin endpoint...');
-        const adminResponse = await api.get<JavaOrderResponse<JavaOrder[]>>('/api/v1/admin/orders');
+        console.log('User orders endpoint failed, trying all orders endpoint...');
+        const adminResponse = await api.get<JavaOrderResponse<JavaOrder[]>>('/api/v1/orders/all');
         if (adminResponse.data.success && adminResponse.data.data) {
           console.log('Admin endpoint returned orders:', adminResponse.data.data.length);
           return adminResponse.data.data.map(transformJavaOrder);
@@ -227,8 +229,8 @@ export const orderService = {
 
   async getOrderById(orderId: string): Promise<Order | null> {
     try {
-      // Use the customer-specific endpoint which handles authentication automatically
-      const response = await api.get<JavaOrderResponse<JavaOrder>>(`/api/v1/customer/orders/${orderId}`);
+      // Get order by ID
+      const response = await api.get<JavaOrderResponse<JavaOrder>>(`/api/v1/orders/${orderId}`);
 
       if (response.data.success && response.data.data) {
         return transformJavaOrder(response.data.data);
@@ -246,8 +248,8 @@ export const orderService = {
 
   async getOrderByNumber(orderNumber: string): Promise<Order | null> {
     try {
-      // Use the customer-specific endpoint which handles authentication automatically
-      const response = await api.get<JavaOrderResponse<JavaOrder>>(`/api/v1/customer/orders/number/${orderNumber}`);
+      // Get order by number
+      const response = await api.get<JavaOrderResponse<JavaOrder>>(`/api/v1/orders/number/${orderNumber}`);
 
       if (response.data.success && response.data.data) {
         return transformJavaOrder(response.data.data);
@@ -265,7 +267,7 @@ export const orderService = {
 
   async createOrder(orderData: CreateOrderRequest): Promise<Order> {
     try {
-      const response = await api.post<JavaOrderResponse<JavaOrder>>('/api/v1/orders', orderData);
+      const response = await api.post<JavaOrderResponse<JavaOrder>>('/api/v1/orders/create', orderData);
 
       if (response.data.success && response.data.data) {
         return transformJavaOrder(response.data.data);
@@ -280,7 +282,7 @@ export const orderService = {
 
   async cancelOrder(orderId: string): Promise<Order> {
     try {
-      // Use the general orders cancel endpoint which works with role-based auth
+      // Cancel order
       const response = await api.put<JavaOrderResponse<JavaOrder>>(`/api/v1/orders/${orderId}/cancel`);
 
       if (response.data.success && response.data.data) {
