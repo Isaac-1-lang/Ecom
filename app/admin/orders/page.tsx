@@ -97,7 +97,7 @@ export default function AdminOrdersPage() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <span className="ml-2 text-neutral-600">Loading orders...</span>
+          <span className="ml-2 text-light-text-secondary dark:text-neutral-400">Loading orders...</span>
         </div>
       </div>
     );
@@ -106,18 +106,18 @@ export default function AdminOrdersPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral-900">Orders Management</h1>
-        <p className="mt-2 text-neutral-600">Manage and track all customer orders</p>
+        <h1 className="text-3xl font-bold text-light-text-primary dark:text-neutral-200">Orders Management</h1>
+        <p className="mt-2 text-light-text-secondary dark:text-neutral-400">Manage and track all customer orders</p>
       </div>
 
       {/* Error Display */}
       {error && (
-        <div className="mb-6 rounded-lg border border-red-200 p-4 bg-red-50">
+        <div className="mb-6 rounded-lg border border-error/20 p-4 bg-error/10">
           <div className="flex items-center justify-between">
-            <p className="text-red-700">{error}</p>
+            <p className="text-error">{error}</p>
             <button 
               onClick={clearError}
-              className="text-red-500 hover:text-red-700 text-sm font-medium"
+              className="text-error hover:text-error/80 text-sm font-medium transition-colors"
             >
               ✕
             </button>
@@ -133,13 +133,13 @@ export default function AdminOrdersPage() {
             placeholder="Search by order number, city, or state..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-2 border border-light-border-subtle dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200 placeholder-light-text-muted dark:placeholder-neutral-400"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-4 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+          className="px-4 py-2 border border-light-border-subtle dark:border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200"
         >
           <option value="all">All Statuses</option>
           <option value="pending">Pending</option>
@@ -153,49 +153,49 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-light-surface-elevated dark:bg-neutral-800 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-neutral-200">
-            <thead className="bg-neutral-50">
+          <table className="min-w-full divide-y divide-light-border-subtle dark:divide-neutral-700">
+            <thead className="bg-light-bg-tertiary dark:bg-neutral-700">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">
                   Order
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">
                   Customer
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">
                   Total
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-neutral-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-neutral-200">
+            <tbody className="bg-light-surface-elevated dark:bg-neutral-800 divide-y divide-light-border-subtle dark:divide-neutral-700">
               {filteredOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-neutral-50">
+                <tr key={order.id} className="hover:bg-light-interactive-hover dark:hover:bg-neutral-700 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
-                      <div className="text-sm font-medium text-neutral-900">
+                      <div className="text-sm font-medium text-light-text-primary dark:text-neutral-200">
                         #{order.orderNumber || order.id}
                       </div>
-                      <div className="text-sm text-neutral-500">
+                      <div className="text-sm text-light-text-secondary dark:text-neutral-400">
                         {order.items.length} items
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-neutral-900">
+                    <div className="text-sm text-light-text-primary dark:text-neutral-200">
                       {order.shippingAddress.city}, {order.shippingAddress.state}
                     </div>
-                    <div className="text-sm text-neutral-500">
+                    <div className="text-sm text-light-text-secondary dark:text-neutral-400">
                       {order.shippingAddress.phone}
                     </div>
                   </td>
@@ -204,10 +204,10 @@ export default function AdminOrdersPage() {
                       {getStatusText(order.status)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-light-text-primary dark:text-neutral-200">
                     ${order.total.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-neutral-500">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-light-text-secondary dark:text-neutral-400">
                     {new Date(order.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -222,7 +222,7 @@ export default function AdminOrdersPage() {
                         value={order.status}
                         onChange={(e) => handleStatusUpdate(order.id, e.target.value as Order['status'])}
                         disabled={updatingStatus === order.id}
-                        className="text-sm border border-neutral-300 rounded px-2 py-1"
+                        className="text-sm border border-light-border-subtle dark:border-neutral-600 rounded px-2 py-1 bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200"
                       >
                         <option value="PENDING">Pending</option>
                         <option value="PROCESSING">Processing</option>
@@ -242,7 +242,7 @@ export default function AdminOrdersPage() {
 
         {filteredOrders.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-neutral-500">No orders found matching your criteria.</p>
+            <p className="text-light-text-secondary dark:text-neutral-400">No orders found matching your criteria.</p>
           </div>
         )}
       </div>
@@ -250,13 +250,13 @@ export default function AdminOrdersPage() {
       {/* Order Details Modal */}
       {selectedOrder && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-light-surface-elevated dark:bg-neutral-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-light-border-subtle dark:border-neutral-700">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium">Order Details</h3>
+                <h3 className="text-lg font-medium text-light-text-primary dark:text-neutral-200">Order Details</h3>
                 <button
                   onClick={() => setSelectedOrder(null)}
-                  className="text-neutral-400 hover:text-neutral-600"
+                  className="text-light-text-muted dark:text-neutral-400 hover:text-light-text-primary dark:hover:text-neutral-200 transition-colors"
                 >
                   ✕
                 </button>

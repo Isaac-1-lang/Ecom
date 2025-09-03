@@ -88,8 +88,8 @@ export default function CategoriesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-neutral-800">Categories</h1>
-          <p className="text-neutral-600 mt-1">Organize your products into categories</p>
+          <h1 className="text-3xl font-bold text-light-text-primary dark:text-neutral-200">Categories</h1>
+          <p className="text-light-text-secondary dark:text-neutral-400 mt-1">Organize your products into categories</p>
         </div>
         <button
           onClick={() => setIsAddModalOpen(true)}
@@ -103,7 +103,7 @@ export default function CategoriesPage() {
       {/* Categories Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => (
-          <div key={category.id} className="bg-white p-6 rounded-xl shadow-soft border border-neutral-200 hover:shadow-soft-lg transition-all">
+          <div key={category.id} className="bg-light-surface-elevated dark:bg-neutral-800 p-6 rounded-xl shadow-light-soft border border-light-border-subtle dark:border-neutral-700 hover:shadow-light-lg transition-all">
             <div className="flex items-start justify-between mb-4">
               <div className="text-4xl">{category.icon}</div>
               <div className="flex items-center gap-2">
@@ -124,31 +124,31 @@ export default function CategoriesPage() {
               </div>
             </div>
             
-            <h3 className="text-lg font-semibold text-neutral-800 mb-2">{category.name}</h3>
-            <p className="text-neutral-600 text-sm mb-4">{category.description}</p>
+            <h3 className="text-lg font-semibold text-light-text-primary dark:text-neutral-200 mb-2">{category.name}</h3>
+            <p className="text-light-text-secondary dark:text-neutral-400 text-sm mb-4">{category.description}</p>
             
             <div className="flex items-center justify-between text-sm">
-              <span className="text-neutral-500">
+              <span className="text-light-text-tertiary dark:text-neutral-400">
                 {category.productCount} products
               </span>
               {category.featured && (
-                <span className="bg-primary/10 text-primary-800 px-2 py-1 rounded-full text-xs font-medium">
+                <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium">
                   Featured
                 </span>
               )}
             </div>
 
             {category.subcategories && category.subcategories.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-neutral-100">
-                <p className="text-xs text-neutral-500 mb-2">Subcategories:</p>
+              <div className="mt-4 pt-4 border-t border-light-border-subtle dark:border-neutral-600">
+                <p className="text-xs text-light-text-muted dark:text-neutral-400 mb-2">Subcategories:</p>
                 <div className="flex flex-wrap gap-1">
                   {category.subcategories.slice(0, 3).map((sub: string, index: number) => (
-                    <span key={index} className="bg-neutral-100 text-neutral-600 px-2 py-1 rounded text-xs">
+                    <span key={index} className="bg-light-bg-tertiary dark:bg-neutral-700 text-light-text-secondary dark:text-neutral-300 px-2 py-1 rounded text-xs">
                       {sub}
                     </span>
                   ))}
                   {category.subcategories.length > 3 && (
-                    <span className="bg-neutral-100 text-neutral-600 px-2 py-1 rounded text-xs">
+                    <span className="bg-light-bg-tertiary dark:bg-neutral-700 text-light-text-secondary dark:text-neutral-300 px-2 py-1 rounded text-xs">
                       +{category.subcategories.length - 3} more
                     </span>
                   )}
@@ -162,9 +162,9 @@ export default function CategoriesPage() {
       {/* Add/Edit Category Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-soft-lg w-full max-w-md">
+          <div className="bg-light-surface-elevated dark:bg-neutral-800 rounded-xl shadow-light-lg w-full max-w-md border border-light-border-subtle dark:border-neutral-700">
             <div className="p-6">
-              <h2 className="text-xl font-semibold text-neutral-800 mb-4">
+              <h2 className="text-xl font-semibold text-light-text-primary dark:text-neutral-200 mb-4">
                 {editingCategory ? 'Edit Category' : 'Add New Category'}
               </h2>
               

@@ -152,7 +152,7 @@ export default function AdminAnalyticsPage() {
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-          <span className="ml-2 text-neutral-600">Loading analytics...</span>
+          <span className="ml-2 text-light-text-secondary dark:text-neutral-400">Loading analytics...</span>
         </div>
       </div>
     );
@@ -162,7 +162,7 @@ export default function AdminAnalyticsPage() {
     return (
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
         <div className="text-center py-20">
-          <p className="text-red-600 mb-4">{error}</p>
+          <p className="text-error mb-4">{error}</p>
           <button
             onClick={fetchAnalytics}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-600"
@@ -177,8 +177,8 @@ export default function AdminAnalyticsPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-neutral-900">Analytics Dashboard</h1>
-        <p className="mt-2 text-neutral-600">Comprehensive insights into your e-commerce performance</p>
+        <h1 className="text-3xl font-bold text-light-text-primary dark:text-neutral-200">Analytics Dashboard</h1>
+        <p className="mt-2 text-light-text-secondary dark:text-neutral-400">Comprehensive insights into your e-commerce performance</p>
       </div>
 
       {/* Key Metrics */}

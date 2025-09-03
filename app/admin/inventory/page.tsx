@@ -161,15 +161,15 @@ export default function InventoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Inventory Management</h1>
-          <p className="text-gray-600 dark:text-gray-400">Monitor and manage your product inventory</p>
+          <h1 className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">Inventory Management</h1>
+          <p className="text-light-text-secondary dark:text-neutral-400">Monitor and manage your product inventory</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 bg-light-bg-tertiary dark:bg-neutral-800 text-light-text-secondary dark:text-neutral-300 rounded-lg hover:bg-light-interactive-hover dark:hover:bg-neutral-700 transition-colors">
             <FiDownload className="h-4 w-4" />
             <span className="hidden sm:inline">Export</span>
           </button>
-          <Link href="/admin/inventory/add" className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <Link href="/admin/inventory/add" className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
             <FiPlus className="h-4 w-4" />
             <span className="hidden sm:inline">Add Item</span>
           </Link>
@@ -178,11 +178,11 @@ export default function InventoryPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-light-surface-elevated dark:bg-neutral-800 p-4 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Items</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.totalItems}</p>
+              <p className="text-sm font-medium text-light-text-secondary dark:text-neutral-400">Total Items</p>
+              <p className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">{stats.totalItems}</p>
             </div>
             <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
               <FiPackage className="h-5 w-5 text-blue-600 dark:text-blue-400" />
@@ -190,11 +190,11 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-light-surface-elevated dark:bg-neutral-800 p-4 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Value</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{formatCurrency(stats.totalValue)}</p>
+              <p className="text-sm font-medium text-light-text-secondary dark:text-neutral-400">Total Value</p>
+              <p className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">{formatCurrency(stats.totalValue)}</p>
             </div>
             <div className="p-2 bg-green-100 dark:bg-green-900/20 rounded-lg">
               <FiDollarSign className="h-5 w-5 text-green-600 dark:text-green-400" />
@@ -202,11 +202,11 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-light-surface-elevated dark:bg-neutral-800 p-4 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Low Stock</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.lowStockItems}</p>
+              <p className="text-sm font-medium text-light-text-secondary dark:text-neutral-400">Low Stock</p>
+              <p className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">{stats.lowStockItems}</p>
             </div>
             <div className="p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded-lg">
               <FiAlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400" />
@@ -214,11 +214,11 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-light-surface-elevated dark:bg-neutral-800 p-4 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Out of Stock</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.outOfStockItems}</p>
+              <p className="text-sm font-medium text-light-text-secondary dark:text-neutral-400">Out of Stock</p>
+              <p className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">{stats.outOfStockItems}</p>
             </div>
             <div className="p-2 bg-red-100 dark:bg-red-900/20 rounded-lg">
               <FiTrendingDown className="h-5 w-5 text-red-600 dark:text-red-400" />
@@ -226,11 +226,11 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <div className="bg-light-surface-elevated dark:bg-neutral-800 p-4 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Categories</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">{stats.categories}</p>
+              <p className="text-sm font-medium text-light-text-secondary dark:text-neutral-400">Categories</p>
+              <p className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">{stats.categories}</p>
             </div>
             <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
               <FiGrid className="h-5 w-5 text-purple-600 dark:text-purple-400" />
@@ -240,17 +240,17 @@ export default function InventoryPage() {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="bg-light-surface-elevated dark:bg-neutral-800 p-4 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700">
         <div className="flex flex-col lg:flex-row gap-4">
           <div className="flex-1">
             <div className="relative">
-              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-light-text-muted dark:text-neutral-400" />
               <input
                 type="text"
                 placeholder="Search inventory by name, SKU, or ID..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+                className="w-full pl-10 pr-4 py-2 border border-light-border-subtle dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200 placeholder-light-text-muted dark:placeholder-neutral-400"
               />
             </div>
           </div>
@@ -258,7 +258,7 @@ export default function InventoryPage() {
             <select
               value={stockFilter}
               onChange={(e) => setStockFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="px-4 py-2 border border-light-border-subtle dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200"
             >
               <option value="all">All Stock Levels</option>
               <option value="in">In Stock</option>
@@ -268,7 +268,7 @@ export default function InventoryPage() {
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="px-4 py-2 border border-light-border-subtle dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200"
             >
               <option value="all">All Categories</option>
               <option value="electronics">Electronics</option>
@@ -278,7 +278,7 @@ export default function InventoryPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="px-4 py-2 border border-light-border-subtle dark:border-neutral-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary text-sm bg-light-surface-primary dark:bg-neutral-800 text-light-text-primary dark:text-neutral-200"
             >
               <option value="name">Sort by Name</option>
               <option value="stock">Sort by Stock</option>
@@ -290,39 +290,39 @@ export default function InventoryPage() {
       </div>
 
       {/* Inventory Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-light-surface-elevated dark:bg-neutral-800 rounded-lg shadow-light-soft border border-light-border-subtle dark:border-neutral-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-700">
+            <thead className="bg-light-bg-tertiary dark:bg-neutral-700">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Product</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Stock</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Value</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">Product</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">Stock</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">Value</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">Status</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">Location</th>
+                <th className="px-4 py-3 text-left text-xs font-medium text-light-text-tertiary dark:text-neutral-400 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-light-border-subtle dark:divide-neutral-700">
               {sortedInventory.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <tr key={item.id} className="hover:bg-light-interactive-hover dark:hover:bg-neutral-700 transition-colors">
                   <td className="px-4 py-4">
                     <div className="space-y-1">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{item.sku}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{item.category}</div>
+                      <div className="text-sm font-medium text-light-text-primary dark:text-neutral-200">{item.name}</div>
+                      <div className="text-sm text-light-text-secondary dark:text-neutral-400">{item.sku}</div>
+                      <div className="text-sm text-light-text-secondary dark:text-neutral-400">{item.category}</div>
                     </div>
                   </td>
                   <td className="px-4 py-4">
                     <div className="space-y-1">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">{item.currentStock} units</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Min: {item.minStock} | Max: {item.maxStock}</div>
+                      <div className="text-sm font-medium text-light-text-primary dark:text-neutral-200">{item.currentStock} units</div>
+                      <div className="text-sm text-light-text-secondary dark:text-neutral-400">Min: {item.minStock} | Max: {item.maxStock}</div>
                     </div>
                   </td>
                   <td className="px-4 py-4">
                     <div className="space-y-1">
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">{formatCurrency(item.totalValue)}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{formatCurrency(item.unitCost)}/unit</div>
+                      <div className="text-sm font-medium text-light-text-primary dark:text-neutral-200">{formatCurrency(item.totalValue)}</div>
+                      <div className="text-sm text-light-text-secondary dark:text-neutral-400">{formatCurrency(item.unitCost)}/unit</div>
                     </div>
                   </td>
                   <td className="px-4 py-4">
@@ -332,16 +332,16 @@ export default function InventoryPage() {
                   </td>
                   <td className="px-4 py-4">
                     <div className="space-y-1">
-                      <div className="text-sm text-gray-900 dark:text-white">{item.location}</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">{item.supplier}</div>
+                      <div className="text-sm text-light-text-primary dark:text-neutral-200">{item.location}</div>
+                      <div className="text-sm text-light-text-secondary dark:text-neutral-400">{item.supplier}</div>
                     </div>
                   </td>
                   <td className="px-4 py-4 text-sm font-medium">
                     <div className="flex items-center gap-3">
-                      <Link href={`/admin/inventory/${item.id}`} className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
+                      <Link href={`/admin/inventory/${item.id}`} className="text-primary hover:text-primary/80 transition-colors">
                         <FiEye className="h-4 w-4" />
                       </Link>
-                      <Link href={`/admin/inventory/${item.id}/edit`} className="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-300 transition-colors">
+                      <Link href={`/admin/inventory/${item.id}/edit`} className="text-light-text-secondary dark:text-neutral-400 hover:text-light-text-primary dark:hover:text-neutral-200 transition-colors">
                         <FiEdit className="h-4 w-4" />
                       </Link>
                     </div>
