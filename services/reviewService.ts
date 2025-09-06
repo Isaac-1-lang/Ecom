@@ -8,7 +8,7 @@ export interface Review {
   userProfilePicture?: string;
   rating: number;
   title: string;
-  comment: string;
+  content: string;
   helpful: number;
   notHelpful: number;
   isVerified: boolean;
@@ -24,9 +24,10 @@ export interface CreateReviewRequest {
 }
 
 export interface UpdateReviewRequest {
+  reviewId?: string;
   rating?: number;
   title?: string;
-  comment?: string;
+  content?: string;
 }
 
 export interface ReviewSearchParams {
@@ -52,7 +53,7 @@ export interface JavaReview {
   userProfilePicture?: string;
   rating: number;
   title: string;
-  comment: string;
+  content: string;
   helpful: number;
   notHelpful: number;
   isVerified: boolean;
@@ -70,7 +71,7 @@ const transformJavaReview = (javaReview: JavaReview): Review => {
     userProfilePicture: javaReview.userProfilePicture,
     rating: javaReview.rating,
     title: javaReview.title,
-    comment: javaReview.comment,
+    content: javaReview.content,
     helpful: javaReview.helpful,
     notHelpful: javaReview.notHelpful,
     isVerified: javaReview.isVerified,
