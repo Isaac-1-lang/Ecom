@@ -22,7 +22,7 @@ export default function ReviewForm({ productId, onSubmitted }: { productId: stri
 
     setLoading(true);
     try {
-      const payload: CreateReviewRequest = { productId, rating, title: title.trim(), comment: comment.trim() };
+      const payload: CreateReviewRequest = { productId, rating, title: title.trim(), content: comment.trim() };
       await reviewService.createReview(payload);
       setSuccess("Review submitted successfully.");
       setComment("");

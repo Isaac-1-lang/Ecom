@@ -161,7 +161,7 @@ export default function InventoryPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">Inventory Management</h1>
+3          <h1 className="text-2xl font-bold text-light-text-primary dark:text-neutral-200">Inventory Management</h1>
           <p className="text-light-text-secondary dark:text-neutral-400">Monitor and manage your product inventory</p>
         </div>
         <div className="flex items-center gap-3">
