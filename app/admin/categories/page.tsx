@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FiPlus, FiEdit, FiTrash2 } from 'react-icons/fi';
-// Dummy categories removed; start with empty list or fetch from backend when available
+import { categoryService, CategoryDTO } from '../../../services/categoryService';
 
 export default function CategoriesPage() {
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any>(null);
   const [formData, setFormData] = useState({
@@ -18,62 +20,108 @@ export default function CategoriesPage() {
 
   const icons = ['📱', '👕', '🏠', '⚽', '💄', '🖥️', '📚', '🎮', '🚗', '🍽️'];
 
-  const handleAddCategory = () => {
+  // Fetch categories from API on component mount
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        console.log('Fetching categories from API...');
+        
+        const categoriesData = await categoryService.getAll();
+        console.log('Categories fetched:', categoriesData);
+        
+        setCategories(categoriesData);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+        setError('Failed to load categories. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleAddCategory = async () => {
     if (formData.name.trim()) {
-      const newCategory = {
-        id: formData.name.toLowerCase().replace(/\s+/g, '-'),
-        name: formData.name,
-        slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
-        description: formData.description,
-        icon: formData.icon,
-        featured: formData.featured,
-        productCount: 0,
-        subcategories: formData.subcategories ? formData.subcategories.split(',').map(s => s.trim()) : []
-      };
-      
-      setCategories(prev => [...prev, newCategory]);
-      setIsAddModalOpen(false);
-      setFormData({ name: '', description: '', icon: '📱', featured: false, subcategories: '' });
+      try {
+        const newCategoryData = {
+          name: formData.name,
+          slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
+          description: formData.description,
+          isFeatured: formData.featured,
+          isActive: true,
+          sortOrder: categories.length + 1
+        };
+        
+        console.log('Creating new category:', newCategoryData);
+        const createdCategory = await categoryService.create(newCategoryData);
+        console.log('Category created:', createdCategory);
+        
+        setCategories(prev => [...prev, createdCategory]);
+        setIsAddModalOpen(false);
+        setFormData({ name: '', description: '', icon: '📱', featured: false, subcategories: '' });
+      } catch (err) {
+        console.error('Error creating category:', err);
+        setError('Failed to create category. Please try again.');
+      }
     }
   };
 
-  const handleEditCategory = (category: any) => {
+  const handleEditCategory = (category: CategoryDTO) => {
     setEditingCategory(category);
     setFormData({
       name: category.name,
-      description: category.description,
-      icon: category.icon,
-      featured: category.featured,
-      subcategories: category.subcategories?.join(', ') || ''
+      description: category.description || '',
+      icon: '📂', // Default icon since API doesn't store icons
+      featured: category.isFeatured || false,
+      subcategories: '' // Not supported in current API structure
     });
     setIsAddModalOpen(true);
   };
 
-  const handleUpdateCategory = () => {
+  const handleUpdateCategory = async () => {
     if (editingCategory && formData.name.trim()) {
-      setCategories(prev => prev.map(cat => 
-        cat.id === editingCategory.id 
-          ? {
-              ...cat,
-              name: formData.name,
-              slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
-              description: formData.description,
-              icon: formData.icon,
-              featured: formData.featured,
-              subcategories: formData.subcategories ? formData.subcategories.split(',').map(s => s.trim()) : []
-            }
-          : cat
-      ));
-      
-      setIsAddModalOpen(false);
-      setEditingCategory(null);
-      setFormData({ name: '', description: '', icon: '📱', featured: false, subcategories: '' });
+      try {
+        const updateData = {
+          name: formData.name,
+          slug: formData.name.toLowerCase().replace(/\s+/g, '-'),
+          description: formData.description,
+          isFeatured: formData.featured,
+          isActive: true
+        };
+        
+        console.log('Updating category:', editingCategory.id, updateData);
+        const updatedCategory = await categoryService.update(editingCategory.id, updateData);
+        console.log('Category updated:', updatedCategory);
+        
+        setCategories(prev => prev.map(cat => 
+          cat.id === editingCategory.id ? updatedCategory : cat
+        ));
+        
+        setIsAddModalOpen(false);
+        setEditingCategory(null);
+        setFormData({ name: '', description: '', icon: '📱', featured: false, subcategories: '' });
+      } catch (err) {
+        console.error('Error updating category:', err);
+        setError('Failed to update category. Please try again.');
+      }
     }
   };
 
-  const handleDeleteCategory = (categoryId: string) => {
+  const handleDeleteCategory = async (categoryId: number) => {
     if (confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
-      setCategories(prev => prev.filter(cat => cat.id !== categoryId));
+      try {
+        console.log('Deleting category:', categoryId);
+        await categoryService.remove(categoryId);
+        console.log('Category deleted successfully');
+        
+        setCategories(prev => prev.filter(cat => cat.id !== categoryId));
+      } catch (err) {
+        console.error('Error deleting category:', err);
+        setError('Failed to delete category. Please try again.');
+      }
     }
   };
 
@@ -100,64 +148,105 @@ export default function CategoriesPage() {
         </button>
       </div>
 
-      {/* Categories Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {categories.map((category) => (
-          <div key={category.id} className="bg-light-surface-elevated dark:bg-neutral-800 p-6 rounded-xl shadow-light-soft border border-light-border-subtle dark:border-neutral-700 hover:shadow-light-lg transition-all">
-            <div className="flex items-start justify-between mb-4">
-              <div className="text-4xl">{category.icon}</div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleEditCategory(category)}
-                  className="text-warning hover:text-warning-600 p-1 rounded hover:bg-warning/10 transition-colors"
-                  title="Edit"
-                >
-                  <FiEdit className="h-4 w-4" />
-                </button>
-                <button
-                  onClick={() => handleDeleteCategory(category.id)}
-                  className="text-error hover:text-error-600 p-1 rounded hover:bg-error/10 transition-colors"
-                  title="Delete"
-                >
-                  <FiTrash2 className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-            
-            <h3 className="text-lg font-semibold text-light-text-primary dark:text-neutral-200 mb-2">{category.name}</h3>
-            <p className="text-light-text-secondary dark:text-neutral-400 text-sm mb-4">{category.description}</p>
-            
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-light-text-tertiary dark:text-neutral-400">
-                {category.productCount} products
-              </span>
-              {category.featured && (
-                <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium">
-                  Featured
-                </span>
-              )}
-            </div>
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          {error}
+          <button 
+            onClick={() => setError(null)}
+            className="ml-2 text-red-500 hover:text-red-700"
+          >
+            ×
+          </button>
+        </div>
+      )}
 
-            {category.subcategories && category.subcategories.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-light-border-subtle dark:border-neutral-600">
-                <p className="text-xs text-light-text-muted dark:text-neutral-400 mb-2">Subcategories:</p>
-                <div className="flex flex-wrap gap-1">
-                  {category.subcategories.slice(0, 3).map((sub: string, index: number) => (
-                    <span key={index} className="bg-light-bg-tertiary dark:bg-neutral-700 text-light-text-secondary dark:text-neutral-300 px-2 py-1 rounded text-xs">
-                      {sub}
-                    </span>
-                  ))}
-                  {category.subcategories.length > 3 && (
-                    <span className="bg-light-bg-tertiary dark:bg-neutral-700 text-light-text-secondary dark:text-neutral-300 px-2 py-1 rounded text-xs">
-                      +{category.subcategories.length - 3} more
+      {/* Loading State */}
+      {isLoading && (
+        <div className="flex items-center justify-center py-12">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-light-text-secondary dark:text-neutral-400">Loading categories...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Categories Grid */}
+      {!isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.length === 0 ? (
+            <div className="col-span-full text-center py-12">
+              <div className="text-6xl mb-4">📂</div>
+              <h3 className="text-xl font-semibold text-light-text-primary dark:text-neutral-200 mb-2">
+                No Categories Found
+              </h3>
+              <p className="text-light-text-secondary dark:text-neutral-400 mb-4">
+                Get started by creating your first category
+              </p>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="bg-primary hover:bg-primary-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors mx-auto"
+              >
+                <FiPlus className="h-4 w-4" />
+                Add Your First Category
+              </button>
+            </div>
+          ) : (
+            categories.map((category) => (
+              <div key={category.id} className="bg-light-surface-elevated dark:bg-neutral-800 p-6 rounded-xl shadow-light-soft border border-light-border-subtle dark:border-neutral-700 hover:shadow-light-lg transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="text-4xl">📂</div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleEditCategory(category)}
+                      className="text-warning hover:text-warning-600 p-1 rounded hover:bg-warning/10 transition-colors"
+                      title="Edit"
+                    >
+                      <FiEdit className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteCategory(category.id)}
+                      className="text-error hover:text-error-600 p-1 rounded hover:bg-error/10 transition-colors"
+                      title="Delete"
+                    >
+                      <FiTrash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+                
+                <h3 className="text-lg font-semibold text-light-text-primary dark:text-neutral-200 mb-2">{category.name}</h3>
+                <p className="text-light-text-secondary dark:text-neutral-400 text-sm mb-4">{category.description || 'No description'}</p>
+                
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-light-text-tertiary dark:text-neutral-400">
+                    ID: {category.id}
+                  </span>
+                  {category.isFeatured && (
+                    <span className="bg-primary/10 text-primary px-2 py-1 rounded-full text-xs font-medium">
+                      Featured
                     </span>
                   )}
                 </div>
+
+                <div className="mt-4 pt-4 border-t border-light-border-subtle dark:border-neutral-600">
+                  <div className="flex flex-wrap gap-2 text-xs">
+                    <span className="bg-light-bg-tertiary dark:bg-neutral-700 text-light-text-secondary dark:text-neutral-300 px-2 py-1 rounded">
+                      Slug: {category.slug}
+                    </span>
+                    <span className={`px-2 py-1 rounded ${
+                      category.isActive 
+                        ? 'bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400' 
+                        : 'bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'
+                    }`}>
+                      {category.isActive ? 'Active' : 'Inactive'}
+                    </span>
+                  </div>
+                </div>
               </div>
-            )}
-          </div>
-        ))}
-      </div>
+            ))
+          )}
+        </div>
+      )}
 
       {/* Add/Edit Category Modal */}
       {isAddModalOpen && (
