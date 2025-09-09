@@ -163,7 +163,7 @@ export const wishlistService = {
 
   async isInWishlist(userId: string, productId: string): Promise<boolean> {
     try {
-      const wishlist = await this.getWishlist(userId);
+      const wishlist = await this.getWishlist(userId,0,10,'addedAt','desc');
       return wishlist?.items.some(item => item.productId === productId) || false;
     } catch (error: any) {
       console.error('Error checking if product is in wishlist:', error);
@@ -173,7 +173,7 @@ export const wishlistService = {
 
   async getWishlistItemCount(userId: string): Promise<number> {
     try {
-      const wishlist = await this.getWishlist(userId);
+      const wishlist = await this.getWishlist(userId,0,10,'addedAt','desc');
       return wishlist?.totalItems || 0;
     } catch (error: any) {
       console.error('Error getting wishlist item count:', error);

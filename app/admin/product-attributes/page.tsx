@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiPlus, FiEdit, FiTrash2, FiSearch, FiFilter, FiRefreshCw } from 'react-icons/fi';
 import { 
   productAttributeService, 
@@ -35,12 +35,7 @@ export default function ProductAttributesPage() {
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  // Fetch attributes from API on component mount
-  useEffect(() => {
-    fetchAttributes();
-  }, []);
-
-  const fetchAttributes = async () => {
+  const fetchAttributes = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
@@ -61,7 +56,12 @@ export default function ProductAttributesPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [searchTerm, filterDataType, filterActive]);
+
+  // Fetch attributes from API on component mount
+  useEffect(() => {
+    fetchAttributes();
+  }, [fetchAttributes]);
 
   // Debounced search effect
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function ProductAttributesPage() {
     }, 500);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm, filterDataType, filterActive]);
+  }, [searchTerm, filterDataType, filterActive, fetchAttributes]);
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
