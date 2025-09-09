@@ -69,7 +69,7 @@ export default function ProductReviews({ productId, refreshToken }: { productId:
               <span>⭐ {r.rating}</span>
             </div>
             {r.title && <p className="font-semibold text-sm">{r.title}</p>}
-            <p className="text-sm">{r.comment}</p>
+            <p className="text-sm">{r.content}</p>
             <div className="flex gap-3 text-xs mt-2">
               <button onClick={() => handleHelpful(r.id, true)} className="underline">
                 Helpful ({r.helpful})

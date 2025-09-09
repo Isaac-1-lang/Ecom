@@ -56,8 +56,8 @@ export default function CheckoutPage() {
         currency: 'USD',
         userId: user?.id || undefined,
         platform: 'web',
-        successUrl: `${window.location.origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${window.location.origin}/cart`,
+        successUrl: `${typeof window !== 'undefined' ? window.location.origin : ''}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${typeof window !== 'undefined' ? window.location.origin : ''}/cart`,
         customerEmail: shippingInfo.email,
       };
 
@@ -80,7 +80,9 @@ export default function CheckoutPage() {
       const { url } = await checkoutService.createUserSession(backendPayload);
       
       // Redirect to Stripe checkout
-      window.location.href = url;
+      if (typeof window !== 'undefined') {
+        window.location.href = url;
+      }
     } catch (error: any) {
       console.error('Checkout error:', error?.message || error);
       setIsProcessing(false);
